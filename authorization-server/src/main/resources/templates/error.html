@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<h1>Error Page</h1>
+<p>Application has encountered an error. Please contact support on ...</p>
+
+Failed URL: ${url}
+Exception: ${exception.message}
+<th:forEach items="${exception.stackTrace}" var="ste"> ${ste}
+</th:forEach>
+</body>
+</html>

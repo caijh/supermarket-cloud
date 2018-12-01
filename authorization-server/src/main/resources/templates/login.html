@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OAuth2-Server</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/register-login.css}"/>
+
+</head>
+<body>
+<div id="box"></div>
+<div class="cent-box">
+    <div class="cent-box-header">
+        <h1 class="main-title hide">后台</h1>
+        <h2 class="sub-title">爱生活 - IBA Life</h2>
+    </div>
+
+    <div>
+        <p th:if="${loginError}">Wrong Username or Password</p>
+    </div>
+
+    <div class="cont-main clearfix">
+        <div class="index-tab">
+            <div class="index-slide-nav">
+                <a class="active">登录</a>
+                <div class="slide-bar"></div>
+            </div>
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="login form">
+                <div class="group">
+                    <div class="group-ipt email">
+                        <input type="text" name="username" id="username" class="ipt" placeholder="输入账号名称" required>
+                    </div>
+                    <div class="group-ipt password">
+                        <input type="password" name="password" id="password" class="ipt" placeholder="输入您的登录密码"
+                               required>
+                    </div>
+                    <div class="group-ipt verify">
+                        <input type="text" name="captcha" id="verify" class="ipt" placeholder="输入验证码" required>
+                        <img src="/anon/kaptcha.jpg" class="imgcode">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button">
+                <button type="submit" class="login-btn register-btn" id="button">登录</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="footer">
+    <p>爱生活 - IBA Life</p>
+    <p>Designed By Caijunhui & <a href="caiqizhe@gmail.com">caiqizhe@gmail.com</a> 2018</p>
+</div>
+
+<script th:src="@{/webjars/jquery/3.2.1/dist/jquery.min.js}"></script>
+<script th:src="@{/js/particles.js}"></script>
+<script th:src="@{/js/background.js}"></script>
+<script th:src="@{/js/layer/layer.js}"></script>
+</body>
+</html>
+

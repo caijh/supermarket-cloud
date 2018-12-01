@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: authorization-server
+  security:
+    user:
+      name: admin
+      password: admin
+  profiles:
+    active: dev
+
+server:
+  port: 9000
+

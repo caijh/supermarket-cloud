@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OAuth2-Server</title>
+    <link th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1>OAuth2 Provider</h1>
+    </div>
+    <h2>Create your application (client registration)</h2>
+    <form action="#" th:action="@{/client/save}" th:object="${registry}"
+          method="post">
+        <div class="form-group">
+            <label for="clientId">clientId:</label>
+            <input class="form-control" id="clientId" type="text" th:field="*{clientId}"/>
+            <div th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}">application id</div>
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input class="form-control" id="name" type="text" th:field="*{name}"/>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">application name</div>
+        </div>
+        <div class="form-group">
+            <label for="redirectUri">Redirect URL:</label> <input
+            class="form-control" id="redirectUri" type="text"
+            th:field="*{redirectUri}"/>
+            <div th:if="${#fields.hasErrors('redirectUri')}" th:errors="*{redirectUri}">
+                Callback URL to receive the authorization code
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="accessTokenValiditySeconds">AccessTokenValiditySeconds:</label>
+            <input class="form-control" id="accessTokenValiditySeconds" type="text"
+                   th:field="*{accessTokenValiditySeconds}"/>
+            <div th:if="${#fields.hasErrors('accessTokenValiditySeconds')}" th:errors="*{accessTokenValiditySeconds}">
+                AccessTokenValiditySeconds
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="clientType">Type of application:</label>
+            <div>
+                <select id="clientType" class="custom-select"
+                        th:field="*{clientType}">
+                    <option value="PUBLIC">Public</option>
+                    <option value="CONFIDENTIAL">Confidential</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Register</button>
+            <button class="btn btn-secondary" type="button"
+                    onclick="javascript: window.location.href='/client/dashboard'">Cancel
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<script th:src="@{/webjars/jquery.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</html>
