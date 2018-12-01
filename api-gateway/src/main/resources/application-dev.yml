@@ -1,0 +1,72 @@
+debug: true
+server:
+  port: ${PORT:8081}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/supermarket
+    username: supermarket
+    password: supermarket
+    driver-class-name: org.postgresql.Driver
+  http:
+    encoding:
+      charset: utf-8
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: com.coding.commons.base.data.jpa.CustomImplicitNamingStrategy
+    properties:
+      hibernate.jdbc.lob.non_contextual_creation: true
+      hibernate.dialect: com.coding.commons.base.data.jpa.CustomPostgreSQLDialect
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+  security:
+    oauth2:
+      client:
+        provider:
+          default-auth-server:
+            authorizationUri: http://localhost:9001/oauth/authorize
+            tokenUri: http://localhost:9000/oauth/token
+        registration:
+          none-registration:
+            provider: none
+            client-id: none
+            client-secret: none
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    register-with-eureka: false
+  instance:
+    instance-id: ${spring.application.name}-${server.port}
+
+
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      jwt:
+        key-uri: http://localhost:9000/oauth/token_key
+
+zuul:
+  routes:
+    admin:
+      path: /admin/**
+      serviceId: service-admin
+      stripPrefix: false
+    upload:
+      path: /upload/**
+      serviceId: service-upload
+      stripPrefix: false
+    product:
+      path: /product/**
+      serviceId: service-product
+      stripPrefix: false
+    order:
+      path: /order/**
+      serviceId: service-order
+      stripPrefix: false
