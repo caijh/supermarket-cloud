@@ -14,6 +14,8 @@ import org.hibernate.annotations.Type;
 @Setter
 @Entity
 public class Shop extends JpaBaseEntity<Long> {
+    private Long userId;
+
     private String name;
 
     @Type(type = "jsonb")
