@@ -1,0 +1,5 @@
+.idea/
+*.iml
+/**/target/
+/**/prod/[0-9]*.html
+/**/app/prod/descp/*.html
