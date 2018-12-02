@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.coding.commons.domain.brand.model.Brand;
-import com.coding.commons.domain.product.model.Category;
-import com.coding.commons.domain.product.model.ProductSku;
+import com.coding.supermarket.domain.brand.model.Brand;
+import com.coding.supermarket.domain.product.model.Category;
+import com.coding.supermarket.domain.product.model.ProductSku;
 import lombok.Getter;
 import lombok.Setter;
 
