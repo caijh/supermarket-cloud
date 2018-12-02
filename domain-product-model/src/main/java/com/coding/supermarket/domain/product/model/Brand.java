@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.brand.model;
+package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
 import javax.persistence.Entity;
