@@ -72,3 +72,10 @@ management:
   endpoint:
     shutdown:
       enabled: true
+
+
+sample:
+  string:
+    property: Client App
+  int:
+    property: 2
