@@ -1,0 +1,56 @@
+server:
+  port: ${PORT:8000}
+
+debug: true
+
+spring:
+  http:
+    encoding:
+      charset: utf-8
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: true
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/supermarket-order
+    username: supermarket
+    password: supermarket
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: com.coding.commons.base.data.jpa.CustomImplicitNamingStrategy
+    properties:
+      hibernate.jdbc.lob.non_contextual_creation: true
+      hibernate.dialect: com.coding.commons.base.data.jpa.CustomPostgreSQLDialect
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+  instance:
+    instance-id: ${spring.application.name}-${server.port}
+
+swagger:
+  enabled: true
+  title: service-express
+  description: service-express
+  base-package: com.coding.serviceexpress.controller
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["*"]
+  endpoint:
+    shutdown:
+      enabled: true
