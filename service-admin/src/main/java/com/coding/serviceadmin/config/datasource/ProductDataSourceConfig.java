@@ -1,11 +1,13 @@
 package com.coding.serviceadmin.config.datasource;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,17 +25,23 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     basePackages = {"com.coding.supermarket.domain.product"} // 设置repository所在包
 )
 public class ProductDataSourceConfig {
+    @Inject
+    private JpaProperties jpaProperties;
 
-
+    @Bean(name = "productDataSourceProperties")
+    @ConfigurationProperties(prefix = "spring.datasource.product")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
     @Bean(name = "productDataSource")
-    @ConfigurationProperties(prefix = "spring.product.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.product")
     public DataSource productDataSource() {
-        return DataSourceBuilder.create().build();
+        return dataSourceProperties().initializeDataSourceBuilder().build();
     }
 
     @Bean(name = "productEntityManagerFactoryBean")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(productDataSource())
+        return builder.dataSource(productDataSource()).properties(jpaProperties.getProperties())
             .packages("com.coding.supermarket.domain.product") // 设置实体类所在位置
             .persistenceUnit("productPersistenceUnit").build();
     }

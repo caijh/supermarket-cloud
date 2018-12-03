@@ -1,11 +1,13 @@
 package com.coding.serviceadmin.config.datasource;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,16 +25,24 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     basePackages = {"com.coding.supermarket.domain.coupon"}
 )
 public class CouponDataSourceConfig {
+    @Inject
+    private JpaProperties jpaProperties;
+
+    @Bean(name = "couponDataSourceProperties")
+    @ConfigurationProperties(prefix = "spring.datasource.coupon")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
 
     @Bean(name = "couponDataSource")
-    @ConfigurationProperties(prefix = "spring.coupon.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.coupon")
     public DataSource couponDataSource() {
-        return DataSourceBuilder.create().build();
+        return dataSourceProperties().initializeDataSourceBuilder().build();
     }
 
     @Bean(name = "couponEntityManagerFactoryBean")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(couponDataSource())
+        return builder.dataSource(couponDataSource()).properties(jpaProperties.getProperties())
             .packages("com.coding.supermarket.domain.coupon") // 设置实体类所在位置
             .persistenceUnit("couponPersistenceUnit").build();
     }

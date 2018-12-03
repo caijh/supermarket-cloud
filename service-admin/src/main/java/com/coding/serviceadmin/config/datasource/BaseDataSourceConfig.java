@@ -1,11 +1,13 @@
 package com.coding.serviceadmin.config.datasource;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,17 +27,27 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 )
 public class BaseDataSourceConfig {
 
+    @Inject
+    private JpaProperties jpaProperties;
+
+    @Primary
+    @Bean(name = "baseDataSourceProperties")
+    @ConfigurationProperties(prefix = "spring.datasource.base")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
     @Primary
     @Bean(name = "baseDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.base")
     public DataSource baseDataSource() {
-        return DataSourceBuilder.create().build();
+        return dataSourceProperties().initializeDataSourceBuilder().build();
     }
 
     @Primary
     @Bean(name = "baseEntityManagerFactoryBean")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(baseDataSource())
+        return builder.dataSource(baseDataSource()).properties(jpaProperties.getProperties())
             .packages("com.coding.commons.domain") // 设置实体类所在位置
             .persistenceUnit("basePersistenceUnit").build();
     }

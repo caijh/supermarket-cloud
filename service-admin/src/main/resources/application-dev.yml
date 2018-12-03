@@ -73,7 +73,6 @@ management:
     shutdown:
       enabled: true
 
-
 sample:
   string:
     property: Client App
