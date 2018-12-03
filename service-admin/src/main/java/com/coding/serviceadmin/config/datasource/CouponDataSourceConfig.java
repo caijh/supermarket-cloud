@@ -30,11 +30,16 @@ public class CouponDataSourceConfig {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "couponEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder) {
+    @Bean(name = "couponEntityManagerFactoryBean")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder.dataSource(couponDataSource())
             .packages("com.coding.supermarket.domain.coupon") // 设置实体类所在位置
             .persistenceUnit("couponPersistenceUnit").build();
+    }
+
+    @Bean(name = "couponEntityManagerFactory")
+    public EntityManagerFactory entityManagerFactory(EntityManagerFactoryBuilder builder) {
+        return entityManagerFactoryBean(builder).getObject();
     }
 
     @Bean(name = "couponTransactionManager")

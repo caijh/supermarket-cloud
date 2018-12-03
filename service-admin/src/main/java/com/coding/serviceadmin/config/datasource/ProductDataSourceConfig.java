@@ -31,11 +31,16 @@ public class ProductDataSourceConfig {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "productEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder) {
+    @Bean(name = "productEntityManagerFactoryBean")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder.dataSource(productDataSource())
             .packages("com.coding.supermarket.domain.product") // 设置实体类所在位置
             .persistenceUnit("productPersistenceUnit").build();
+    }
+
+    @Bean(name = "productEntityManagerFactory")
+    public EntityManagerFactory entityManagerFactory(EntityManagerFactoryBuilder builder) {
+        return entityManagerFactoryBean(builder).getObject();
     }
 
     @Bean(name = "productTransactionManager")

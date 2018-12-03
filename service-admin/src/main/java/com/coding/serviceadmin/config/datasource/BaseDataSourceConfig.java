@@ -33,11 +33,17 @@ public class BaseDataSourceConfig {
     }
 
     @Primary
-    @Bean(name = "baseEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder) {
+    @Bean(name = "baseEntityManagerFactoryBean")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder.dataSource(baseDataSource())
             .packages("com.coding.commons.domain") // 设置实体类所在位置
             .persistenceUnit("basePersistenceUnit").build();
+    }
+
+    @Primary
+    @Bean(name = "baseEntityManagerFactory")
+    public EntityManagerFactory entityManagerFactory(EntityManagerFactoryBuilder builder) {
+        return entityManagerFactoryBean(builder).getObject();
     }
 
     @Primary
