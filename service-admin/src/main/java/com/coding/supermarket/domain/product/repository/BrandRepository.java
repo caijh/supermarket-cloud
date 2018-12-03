@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.brand.repository;
+package com.coding.supermarket.domain.product.repository;
 
 import com.coding.supermarket.domain.product.model.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;

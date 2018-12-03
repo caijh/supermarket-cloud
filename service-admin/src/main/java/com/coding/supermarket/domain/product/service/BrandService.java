@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.brand.service;
+package com.coding.supermarket.domain.product.service;
 
 import com.coding.commons.base.BizException;
 import com.coding.commons.base.data.jpa.service.JpaBaseService;

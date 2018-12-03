@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.brand.repository;
+package com.coding.supermarket.domain.product.repository;
 
 import javax.inject.Inject;
 import javax.inject.Named;

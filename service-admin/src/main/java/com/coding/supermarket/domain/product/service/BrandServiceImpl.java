@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.brand.service;
+package com.coding.supermarket.domain.product.service;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -8,8 +8,8 @@ import com.coding.commons.base.BizException;
 import com.coding.commons.base.CommonStatus;
 import com.coding.commons.util.BeanUtils;
 import com.coding.commons.util.DateUtils;
-import com.coding.supermarket.domain.brand.repository.BrandCacheRepository;
 import com.coding.supermarket.domain.product.model.Brand;
+import com.coding.supermarket.domain.product.repository.BrandCacheRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Named
