@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.model;
+package com.coding.supermarket.domain.order.model;
 
 import java.util.Date;
 import java.util.List;
