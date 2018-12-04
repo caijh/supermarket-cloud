@@ -5,7 +5,7 @@ import javax.inject.Named;
 
 import com.coding.commons.base.data.jpa.repository.CacheRepository;
 import com.coding.commons.base.data.redis.RedisUtils;
-import com.coding.supermarket.domain.model.Order;
+import com.coding.supermarket.domain.order.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Named

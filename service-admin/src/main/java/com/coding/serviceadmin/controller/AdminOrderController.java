@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import com.coding.commons.base.BizException;
 import com.coding.commons.util.BeanUtils;
 import com.coding.serviceadmin.request.order.OrderListReqBody;
-import com.coding.supermarket.domain.model.Order;
+import com.coding.supermarket.domain.order.model.Order;
 import com.coding.supermarket.domain.order.service.OrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

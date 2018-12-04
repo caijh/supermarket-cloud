@@ -45,18 +45,13 @@ public class BaseDataSourceConfig {
     }
 
     @Primary
-    @Bean(name = "baseEntityManagerFactoryBean")
+    @Bean(name = "baseEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(baseDataSource()).properties(jpaProperties.getProperties())
+        return builder.dataSource(baseDataSource()).properties(jpaProperties.getHibernateProperties(HibernateSettingsFactory.getHibernateSettings(jpaProperties)))
             .packages("com.coding.commons.domain") // 设置实体类所在位置
             .persistenceUnit("basePersistenceUnit").build();
     }
 
-    @Primary
-    @Bean(name = "baseEntityManagerFactory")
-    public EntityManagerFactory entityManagerFactory(EntityManagerFactoryBuilder builder) {
-        return entityManagerFactoryBean(builder).getObject();
-    }
 
     @Primary
     @Bean(name = "baseTransactionManager")

@@ -40,17 +40,12 @@ public class OrderDataSourceConfig {
         return dataSourceProperties().initializeDataSourceBuilder().build();
     }
 
-    @Bean(name = "orderEntityManagerFactoryBean")
+    @Bean(name = "orderEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(
         EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(orderDataSource()).properties(jpaProperties.getProperties())
+        return builder.dataSource(orderDataSource()).properties(jpaProperties.getHibernateProperties(HibernateSettingsFactory.getHibernateSettings(jpaProperties)))
             .packages("com.coding.supermarket.domain.order") // 设置实体类所在位置
             .persistenceUnit("orderPersistenceUnit").build();
-    }
-
-    @Bean(name = "orderEntityManagerFactory")
-    public EntityManagerFactory entityManagerFactory(EntityManagerFactoryBuilder builder) {
-        return entityManagerFactoryBean(builder).getObject();
     }
 
     @Bean(name = "orderTransactionManager")

@@ -39,16 +39,11 @@ public class ProductDataSourceConfig {
         return dataSourceProperties().initializeDataSourceBuilder().build();
     }
 
-    @Bean(name = "productEntityManagerFactoryBean")
+    @Bean(name = "productEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(productDataSource()).properties(jpaProperties.getProperties())
+        return builder.dataSource(productDataSource()).properties(jpaProperties.getHibernateProperties(HibernateSettingsFactory.getHibernateSettings(jpaProperties)))
             .packages("com.coding.supermarket.domain.product") // 设置实体类所在位置
             .persistenceUnit("productPersistenceUnit").build();
-    }
-
-    @Bean(name = "productEntityManagerFactory")
-    public EntityManagerFactory entityManagerFactory(EntityManagerFactoryBuilder builder) {
-        return entityManagerFactoryBean(builder).getObject();
     }
 
     @Bean(name = "productTransactionManager")
