@@ -6,7 +6,7 @@
     @TypeDef(name = "jsonb-node", typeClass = JsonNodeBinaryType.class),
     @TypeDef(name = "json-node", typeClass = JsonNodeStringType.class)
 })
-package com.coding.supermarket.domain;
+package com.coding.supermarket.domain.order;
 
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
