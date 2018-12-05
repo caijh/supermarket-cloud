@@ -1,0 +1,32 @@
+[
+  {
+    "id": 10000,
+    "code": "ROLE_ADMIN",
+    "name": "系统管理员角色",
+    "createdBy": null,
+    "createTime": null,
+    "updatedBy": null,
+    "updateTime": null,
+    "isSysDefined": true
+  },
+  {
+    "id": 10001,
+    "code": "ROLE_10001",
+    "name": "测试",
+    "createdBy": 10000,
+    "createTime": 1528868394210,
+    "updatedBy": null,
+    "updateTime": null,
+    "isSysDefined": false
+  },
+  {
+    "id": 10002,
+    "code": "ROLE_10002",
+    "name": "测试角色2",
+    "createdBy": 10000,
+    "createTime": 1528876390264,
+    "updatedBy": null,
+    "updateTime": null,
+    "isSysDefined": false
+  }
+]

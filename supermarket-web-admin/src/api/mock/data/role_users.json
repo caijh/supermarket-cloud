@@ -1,0 +1,18 @@
+[
+  {
+    "id": 10000,
+    "account": "admin@supermarket",
+    "password": "e10adc3949ba59abbe56e057f20f883e",
+    "nickname": "管理员",
+    "realName": null,
+    "headImg": null,
+    "age": null,
+    "createdBy": null,
+    "createTime": 1534407688000,
+    "updatedBy": null,
+    "updateTime": null,
+    "status": 0,
+    "hasRole": true
+  }
+]
+

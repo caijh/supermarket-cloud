@@ -1,0 +1,126 @@
+[
+  {
+    "id": 10000000,
+    "type": 1,
+    "icon": null,
+    "displayName": "系统管理",
+    "url": null,
+    "parentId": null,
+    "depends": null,
+    "selected": true,
+    "subs": [
+      {
+        "id": 10020000,
+        "type": 1,
+        "icon": null,
+        "displayName": "用户管理",
+        "url": "/admin/user/list",
+        "parentId": 10000000,
+        "depends": null,
+        "selected": true,
+        "subs": [
+          {
+            "id": 10020100,
+            "type": 2,
+            "icon": null,
+            "displayName": "新增",
+            "url": "/admin/user/add",
+            "parentId": 10020000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          },
+          {
+            "id": 10020300,
+            "type": 2,
+            "icon": null,
+            "displayName": "查看",
+            "url": "/admin/user/detail",
+            "parentId": 10020000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          },
+          {
+            "id": 10020400,
+            "type": 2,
+            "icon": null,
+            "displayName": "删除",
+            "url": "/admin/user/delete",
+            "parentId": 10020000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          },
+          {
+            "id": 10020200,
+            "type": 2,
+            "icon": null,
+            "displayName": "修改",
+            "url": "/admin/user/update",
+            "parentId": 10020000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          }
+        ]
+      },
+      {
+        "id": 10010000,
+        "type": 1,
+        "icon": null,
+        "displayName": "角色管理",
+        "url": "/admin/role/list",
+        "parentId": 10000000,
+        "depends": null,
+        "selected": true,
+        "subs": [
+          {
+            "id": 10010400,
+            "type": 2,
+            "icon": null,
+            "displayName": "删除",
+            "url": "/admin/role/delete",
+            "parentId": 10010000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          },
+          {
+            "id": 10010100,
+            "type": 2,
+            "icon": null,
+            "displayName": "新增",
+            "url": "/admin/role/add",
+            "parentId": 10010000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          },
+          {
+            "id": 10010300,
+            "type": 2,
+            "icon": null,
+            "displayName": "查看",
+            "url": "/admin/role/detail",
+            "parentId": 10010000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          },
+          {
+            "id": 10010200,
+            "type": 2,
+            "icon": null,
+            "displayName": "修改",
+            "url": "/admin/role/update",
+            "parentId": 10010000,
+            "depends": null,
+            "selected": true,
+            "subs": null
+          }
+        ]
+      }
+    ]
+  }
+]
