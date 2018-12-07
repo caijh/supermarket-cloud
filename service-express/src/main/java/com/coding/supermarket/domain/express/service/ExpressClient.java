@@ -6,4 +6,5 @@ import com.coding.supermarket.domain.express.model.ExpressRoute;
 public interface ExpressClient {
 
     ExpressRoute queryExpressRoute(ExpressClientSetting settings, String expressNo);
+
 }
