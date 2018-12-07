@@ -1,5 +1,6 @@
 package com.coding.supermarket.domain.express.service;
 
+import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,6 +81,6 @@ public class CainiaoExpressClient implements ExpressClient {
 
     private String getSign(String logisticsInterface, String appKey) throws NoSuchAlgorithmException {
         String content = logisticsInterface + appKey;
-        return Base64Utils.encrypt(MD5Utils.md5(content).getBytes());
+        return Base64Utils.encrypt(MD5Utils.md5(content).getBytes(Charset.defaultCharset()));
     }
 }
