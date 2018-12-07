@@ -1,50 +1,152 @@
 CREATE TABLE "public"."t_country" (
   "id" int8 NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "en_name" varchar(255) COLLATE "pg_catalog"."default",
-  "full_en_name" varchar(255) COLLATE "pg_catalog"."default",
-  "first_char" varchar(255) COLLATE "pg_catalog"."default",
   "abbreviation" varchar(255) COLLATE "pg_catalog"."default",
+  "en_name" varchar(255) COLLATE "pg_catalog"."default",
+  "first_char" varchar(255) COLLATE "pg_catalog"."default",
+  "full_en_name" varchar(255) COLLATE "pg_catalog"."default",
+  "name" varchar(255) COLLATE "pg_catalog"."default",
   CONSTRAINT "t_country_pkey" PRIMARY KEY ("id")
-);
+)
+;
 
-COMMENT ON TABLE "public"."t_country" IS '国家';
+ALTER TABLE "public"."t_country" 
+  OWNER TO "supermarket";
 
 CREATE TABLE "public"."t_area" (
   "code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "country_id" int8,
+  "name" varchar(255) COLLATE "pg_catalog"."default",
   "parent_code" varchar(255) COLLATE "pg_catalog"."default",
-  "country_id" int8 NOT NULL,
   CONSTRAINT "t_area_pkey" PRIMARY KEY ("code")
+)
+;
+
+ALTER TABLE "public"."t_area" 
+  OWNER TO "supermarket";
+
+CREATE TABLE "public"."t_client_app" (
+  "client_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "access_token_validity_seconds" int4,
+  "authorities" jsonb,
+  "authorized_grant_types" jsonb,
+  "client_secret" varchar(255) COLLATE "pg_catalog"."default",
+  "client_type" int4,
+  "name" varchar(255) COLLATE "pg_catalog"."default",
+  "redirect_uri" jsonb,
+  "refresh_token_validity_seconds" int4,
+  "resource_ids" jsonb,
+  "scope" jsonb,
+  CONSTRAINT "t_client_app_pkey" PRIMARY KEY ("client_id")
+)
+;
+
+ALTER TABLE "public"."t_client_app" 
+  OWNER TO "supermarket";
+
+CREATE TABLE "t_role" (
+  "id" int8 NOT NULL,
+  "code" varchar(255) NOT NULL,
+  "name" varchar(255) NOT NULL,
+  "create_time" timestamp(6),
+  "created_by" int8,
+  "update_time" timestamp(6),
+  "updated_by" int8,
+  "is_sys_defined" bool DEFAULT false,
+  PRIMARY KEY ("id")
 );
+COMMENT ON TABLE "t_role" IS '角色表';
+COMMENT ON COLUMN "t_role"."code" IS '角色代号';
+COMMENT ON COLUMN "t_role"."is_sys_defined" IS '是否是系统预先定义的角色';
 
-COMMENT ON COLUMN "public"."t_area"."code" IS '地区码';
+CREATE TABLE "t_user" (
+  "id" int8 NOT NULL,
+  "account" varchar(255) NOT NULL,
+  "password" varchar(255) NOT NULL,
+  "nickname" varchar(255),
+  "real_name" varchar(255),
+  "head_img" varchar(255),
+  "age" int4,
+  "create_time" timestamp,
+  "created_by" int8,
+  "update_time" timestamp,
+  "updated_by" int8,
+  "status" int4,
+  PRIMARY KEY ("id") ,
+  CONSTRAINT "udx_account" UNIQUE ("account")
+);
+COMMENT ON TABLE "t_user" IS '用户表';
+COMMENT ON COLUMN "t_user"."status" IS '0-正常,1-锁定,2-删除';
 
-COMMENT ON COLUMN "public"."t_area"."name" IS '名称';
+CREATE TABLE "t_user_role" (
+  "user_id" int8 NOT NULL,
+  "role_id" int8 NOT NULL,
+  PRIMARY KEY ("role_id", "user_id")
+);
+CREATE INDEX "idx_user_id" ON "t_user_role" ("user_id" ASC NULLS LAST);
+CREATE INDEX "idx_role_id" ON "t_user_role" ("role_id" ASC NULLS LAST);
+COMMENT ON TABLE "t_user_role" IS '用户与角色关系表';
 
-COMMENT ON COLUMN "public"."t_area"."parent_code" IS '上一级地区';
+CREATE TABLE "t_resource" (
+  "id" int8 NOT NULL,
+  "type" int4,
+  "parent_id" int8,
+  "display_name" varchar(255),
+  "url" varchar(255),
+  PRIMARY KEY ("id")
+);
+CREATE INDEX "idx_parent_id" ON "t_resource" ("parent_id" ASC NULLS LAST);
+COMMENT ON TABLE "t_resource" IS '权限资源表';
+COMMENT ON COLUMN "t_resource"."type" IS '1-菜单,2-按钮,Link';
 
-COMMENT ON COLUMN "public"."t_area"."country_id" IS '所属国家id';
-
-
-INSERT INTO "public"."t_country"("id", "abbreviation", "en_name", "first_char", "full_en_name", "name") VALUES (86, 'CN', 'China', 'C', '', '中国');
+CREATE TABLE "t_role_resource" (
+"role_id" int8 NOT NULL,
+"resource_id" int8 NOT NULL,
+PRIMARY KEY ("resource_id", "role_id")
+);
+COMMENT ON TABLE "t_role_resource" IS '角色与权限关系表';
 
 CREATE TABLE "public"."t_shop" (
   "id" int8 NOT NULL,
-  "user_id" int8 NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
   "address" jsonb,
-  "thumbnails" jsonb,
-  "introduction" text COLLATE "pg_catalog"."default",
-  "status" int4 NOT NULL,
-  "create_time" date NOT NULL,
+  "create_time" timestamp(6),
   "created_by" int8,
-  "update_time" date,
+  "introduction" varchar(255) COLLATE "pg_catalog"."default",
+  "name" varchar(255) COLLATE "pg_catalog"."default",
+  "status" int4,
+  "thumbnails" jsonb,
+  "update_time" timestamp(6),
   "updated_by" int8,
+  "user_id" int8,
   CONSTRAINT "t_shop_pkey" PRIMARY KEY ("id")
 )
 ;
 
-COMMENT ON COLUMN "public"."t_shop"."status" IS '0-在用,1-删除';
+CREATE TABLE "public"."t_express" (
+  "id" int8 NOT NULL,
+  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  CONSTRAINT "t_express_pkey" PRIMARY KEY ("id")
+)
+;
 
-COMMENT ON COLUMN "public"."t_shop"."user_id" IS '所属uid';
+ALTER TABLE "public"."t_express" 
+  OWNER TO "postgres";
+
+COMMENT ON COLUMN "public"."t_express"."id" IS ' id';
+COMMENT ON COLUMN "public"."t_express"."name" IS '快递名称';
+
+CREATE TABLE "public"."t_express_setting" (
+  "client" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "express_id" int8 NOT NULL,
+  "config" jsonb,
+  CONSTRAINT "t_express_settings_pkey" PRIMARY KEY ("client", "express_id")
+)
+;
+
+ALTER TABLE "public"."t_express_setting" 
+  OWNER TO "postgres";
+
+COMMENT ON COLUMN "public"."t_express_setting"."client" IS '对应client的名称';
+
+COMMENT ON COLUMN "public"."t_express_setting"."express_id" IS '快递物流商id';
+
+COMMENT ON COLUMN "public"."t_express_setting"."config" IS '在client的配置';

@@ -20,9 +20,13 @@ import com.coding.supermarket.domain.express.model.ClientConfig;
 import com.coding.supermarket.domain.express.model.ExpressClientSetting;
 import com.coding.supermarket.domain.express.model.ExpressRoute;
 import com.coding.supermarket.domain.express.model.ExpressRouteItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named("cainiaoExpressClient")
 public class CainiaoExpressClient implements ExpressClient {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public ExpressRoute queryExpressRoute(ExpressClientSetting settings, String expressNo) {
@@ -45,6 +49,7 @@ public class CainiaoExpressClient implements ExpressClient {
             }
         } catch (Exception e) {
             expressRoute = null;
+            logger.error("queryExpressRoute fail", e);
         }
 
         return expressRoute;
