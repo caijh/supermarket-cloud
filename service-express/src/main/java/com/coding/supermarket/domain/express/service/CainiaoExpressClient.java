@@ -70,15 +70,15 @@ public class CainiaoExpressClient implements ExpressClient {
         JSONArray fullTraceDetail = resultJson.getJSONArray("fullTraceDetail");
         if (fullTraceDetail == null) {
             ExpressRouteItem item = new ExpressRouteItem();
-            item.setNotes("暂无物流信息");
-            item.setOpTime(DateUtils.format(DateUtils.now()));
+            item.setDescription("暂无物流信息");
+            item.setOperateTime(DateUtils.format(DateUtils.now()));
             expressRoute.getItems().add(item);
         } else {
             for (int i = 0; i < fullTraceDetail.size(); i++) {
                 JSONObject routeItem = fullTraceDetail.getJSONObject(i);
                 ExpressRouteItem item = new ExpressRouteItem();
-                item.setNotes(routeItem.getString("desc"));
-                item.setOpTime(routeItem.getString("time"));
+                item.setDescription(routeItem.getString("desc"));
+                item.setOperateTime(routeItem.getString("time"));
                 expressRoute.getItems().add(item);
             }
         }

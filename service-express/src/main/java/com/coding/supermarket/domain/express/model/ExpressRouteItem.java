@@ -7,20 +7,16 @@ import lombok.Setter;
 @Setter
 public class ExpressRouteItem {
     /**
-     * 代码
-     */
-    private String state;
-    /**
      * 描述
      */
-    private String notes;
+    private String description;
     /**
      * 发生时间
      */
-    private String opTime;
+    private String operateTime;
     /**
      * 操作人
      */
-    private String opercode;
+    private String operatorName;
 
 }
