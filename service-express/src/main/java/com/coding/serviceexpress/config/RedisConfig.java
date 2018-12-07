@@ -1,6 +1,5 @@
 package com.coding.serviceexpress.config;
 
-import com.coding.commons.base.data.redis.RedisUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -23,10 +22,4 @@ public class RedisConfig {
         redisTemplate.setEnableTransactionSupport(true);
         return redisTemplate;
     }
-
-    @Bean
-    public RedisUtils redisUtils(RedisTemplate<String, Object> redisTemplate) {
-        return new RedisUtils(redisTemplate);
-    }
-
 }

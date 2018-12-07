@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8000}
+  port: ${random.int[8000,9000]}
 
 debug: true
 
@@ -11,18 +11,10 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: true
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/supermarket-order
+    url: jdbc:postgresql://127.0.0.1:5432/supermarket-base
     username: supermarket
     password: supermarket
     driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-      naming:
-        implicit-strategy: com.coding.commons.base.data.jpa.CustomImplicitNamingStrategy
-    properties:
-      hibernate.jdbc.lob.non_contextual_creation: true
-      hibernate.dialect: com.coding.commons.base.data.jpa.CustomPostgreSQLDialect
   redis:
     host: 127.0.0.1
     port: 6379
@@ -32,6 +24,15 @@ spring:
     port: 5672
     username: guest
     password: guest
+
+mybatis:
+  type-aliases-package: com.coding.supermarket.domain.express
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
 
 eureka:
   client:
