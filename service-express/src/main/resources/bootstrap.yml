@@ -1,3 +1,6 @@
+server:
+  port: ${random.int[8000,9000]}
+
 spring:
   application:
     name: service-express
@@ -6,3 +9,10 @@ spring:
       uri: http://localhost:8888
   profiles:
     active: dev
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+  instance:
+    instance-id: ${spring.application.name}-${server.port}
