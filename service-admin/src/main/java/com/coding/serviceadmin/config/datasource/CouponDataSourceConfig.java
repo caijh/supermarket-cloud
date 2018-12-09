@@ -35,7 +35,6 @@ public class CouponDataSourceConfig {
     }
 
     @Bean(name = "couponDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.coupon")
     public DataSource couponDataSource() {
         return dataSourceProperties().initializeDataSourceBuilder().build();
     }

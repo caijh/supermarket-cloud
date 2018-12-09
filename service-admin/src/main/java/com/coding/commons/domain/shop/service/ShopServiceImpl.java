@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.coding.commons.base.BizException;
+import com.coding.commons.base.CommonStatus;
 import com.coding.commons.domain.shop.model.Shop;
 import com.coding.commons.domain.shop.repository.ShopCacheRepository;
 import com.coding.commons.util.BeanUtils;
@@ -23,6 +24,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void add(Shop shop) {
+        shop.setStatus(CommonStatus.IN_USE.getIndex());
         getRepository().save(shop);
     }
 

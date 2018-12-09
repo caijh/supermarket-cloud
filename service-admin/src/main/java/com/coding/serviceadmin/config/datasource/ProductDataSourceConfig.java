@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     basePackages = {"com.coding.supermarket.domain.product"} // 设置repository所在包
 )
 public class ProductDataSourceConfig {
+
     @Inject
     private JpaProperties jpaProperties;
 
@@ -33,8 +34,8 @@ public class ProductDataSourceConfig {
     public DataSourceProperties dataSourceProperties() {
         return new DataSourceProperties();
     }
+
     @Bean(name = "productDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.product")
     public DataSource productDataSource() {
         return dataSourceProperties().initializeDataSourceBuilder().build();
     }

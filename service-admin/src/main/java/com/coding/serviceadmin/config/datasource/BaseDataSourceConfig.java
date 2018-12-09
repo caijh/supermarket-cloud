@@ -39,7 +39,6 @@ public class BaseDataSourceConfig {
 
     @Primary
     @Bean(name = "baseDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.base")
     public DataSource baseDataSource() {
         return dataSourceProperties().initializeDataSourceBuilder().build();
     }
@@ -51,7 +50,6 @@ public class BaseDataSourceConfig {
             .packages("com.coding.commons.domain") // 设置实体类所在位置
             .persistenceUnit("basePersistenceUnit").build();
     }
-
 
     @Primary
     @Bean(name = "baseTransactionManager")

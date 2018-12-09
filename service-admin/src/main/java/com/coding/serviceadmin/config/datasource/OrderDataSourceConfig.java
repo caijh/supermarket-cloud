@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     basePackages = {"com.coding.supermarket.domain.order"}
 )
 public class OrderDataSourceConfig {
+
     @Inject
     private JpaProperties jpaProperties;
 
@@ -35,7 +36,6 @@ public class OrderDataSourceConfig {
     }
 
     @Bean(name = "orderDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.order")
     public DataSource orderDataSource() {
         return dataSourceProperties().initializeDataSourceBuilder().build();
     }
