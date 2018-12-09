@@ -28,7 +28,7 @@
     <dependencies>
         <dependency>
             <groupId>com.coding</groupId>
-            <artifactId>commons-base-data-jpa</artifactId>
+            <artifactId>commons-domain-model</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>

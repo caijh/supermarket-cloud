@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.repository;
+package com.coding.supermarket.domain.product.repository;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,6 +13,7 @@ public class ProductCacheRepository implements CacheRepository<Product, Long> {
 
     @Inject
     private ProductRepository productRepository;
+
     @Inject
     private RedisUtils redisUtils;
 
@@ -30,4 +31,5 @@ public class ProductCacheRepository implements CacheRepository<Product, Long> {
     public RedisUtils getRedisUtils() {
         return redisUtils;
     }
+
 }

@@ -1,13 +1,16 @@
 package com.coding.serviceproduct.controller;
 
+import java.util.List;
 import javax.inject.Inject;
 
 import com.coding.commons.base.BizException;
 import com.coding.commons.util.BeanUtils;
 import com.coding.serviceproduct.request.product.ProductListReqBody;
+import com.coding.serviceproduct.request.product.ProductSkuListReqBody;
 import com.coding.supermarket.domain.product.model.Product;
 import com.coding.supermarket.domain.product.model.ProductStatus;
 import com.coding.supermarket.domain.product.service.ProductService;
+import com.coding.supermarket.domain.product.vo.ProductSkuVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +35,12 @@ public class ProductController {
         Product product = new Product();
         BeanUtils.copyProperties(reqBody, product);
         product.setStatus(ProductStatus.ON_SALE.getIndex());
-        return productService
-            .list(product, PageRequest.of(reqBody.getPageNo(), reqBody.getPageSize()));
+        return productService.list(product, PageRequest.of(reqBody.getPageNo(), reqBody.getPageSize()));
+    }
+
+    @PostMapping(value = "/sku/list")
+    public List<ProductSkuVo> productSkuList(@RequestBody ProductSkuListReqBody reqBody) {
+        return productService.findSkuList(reqBody.getProductSkuIds());
     }
 
     /**
