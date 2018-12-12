@@ -19,7 +19,7 @@ public class ExpressController {
     private ExpressService expressService;
 
     @GetMapping(value = "/info")
-    public ExpressRoute queryExpressRoute(@RequestParam Long expressId, @RequestParam String expressNo) {
+    public ExpressRoute queryExpressRoute(@RequestParam String expressId, @RequestParam String expressNo) {
         Express express = expressService.get(expressId);
         AssertUtils.notNull(express);
         return expressService.queryExpressRoute(express, expressNo);

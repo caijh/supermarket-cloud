@@ -17,6 +17,6 @@
     </select>
 
     <select id="findExpressClientSetting" resultMap="ExpressClientSetting">
-        select ecs.*,ec.config client_config from t_express_client_setting ecs left join t_express_client ec on ecs.client = ec.client where express_id = #{expressId}
+        select ecs.*,ec.config client_config from t_express_client_setting ecs left join t_express_client ec on ecs.client = ec.name where express_id = #{expressId}
     </select>
 </mapper>

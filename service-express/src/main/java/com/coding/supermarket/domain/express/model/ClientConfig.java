@@ -14,4 +14,6 @@ public class ClientConfig {
     private String appCode;
 
     private String queryUrl;
+
+    private String subscribeUrl;
 }

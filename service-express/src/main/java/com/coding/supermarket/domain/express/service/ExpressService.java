@@ -5,7 +5,7 @@ import com.coding.supermarket.domain.express.model.ExpressRoute;
 
 public interface ExpressService {
 
-    Express get(Long expressId);
+    Express get(String expressId);
 
     ExpressRoute queryExpressRoute(Express express, String expressNo);
 }

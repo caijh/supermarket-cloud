@@ -22,7 +22,7 @@ public class ExpressServiceImpl implements ExpressService {
     private Map<String, ExpressClient> expressClientMap;
 
     @Override
-    public Express get(Long expressId) {
+    public Express get(String expressId) {
         return expressMapper.get(expressId);
     }
 
@@ -48,6 +48,10 @@ public class ExpressServiceImpl implements ExpressService {
             if (expressRoute != null) {
                 break;
             }
+        }
+        if (expressRoute != null) {
+            expressRoute.setExpressNo(expressNo);
+            expressRoute.setExpressName(express.getName());
         }
 
         return expressRoute;

@@ -122,31 +122,33 @@ CREATE TABLE "public"."t_shop" (
 ;
 
 CREATE TABLE "public"."t_express" (
-  "id" int8 NOT NULL,
+  "id" varchar(255) NOT NULL,
   "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
   CONSTRAINT "t_express_pkey" PRIMARY KEY ("id")
 )
 ;
 
-ALTER TABLE "public"."t_express" 
-  OWNER TO "postgres";
-
 COMMENT ON COLUMN "public"."t_express"."id" IS ' id';
-COMMENT ON COLUMN "public"."t_express"."name" IS '快递名称';
+COMMENT ON COLUMN "public"."t_express"."name" IS '快递商名称';
 
-CREATE TABLE "public"."t_express_setting" (
-  "client" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "express_id" int8 NOT NULL,
-  "config" jsonb,
-  CONSTRAINT "t_express_settings_pkey" PRIMARY KEY ("client", "express_id")
+CREATE TABLE "public"."t_express_client" (
+  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "config" varchar(2000) NOT NULL,
+  CONSTRAINT "t_express_client_pkey" PRIMARY KEY ("name")
 )
 ;
 
-ALTER TABLE "public"."t_express_setting" 
-  OWNER TO "postgres";
 
-COMMENT ON COLUMN "public"."t_express_setting"."client" IS '对应client的名称';
+CREATE TABLE "public"."t_express_client_setting" (
+  "client" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "express_id" varchar(255) NOT NULL,
+  "express_config" varchar(2000),
+  CONSTRAINT "t_express_client_setting_pkey" PRIMARY KEY ("client", "express_id")
+)
+;
 
-COMMENT ON COLUMN "public"."t_express_setting"."express_id" IS '快递物流商id';
+COMMENT ON COLUMN "public"."t_express_client_setting"."client" IS '对应client的名称';
 
-COMMENT ON COLUMN "public"."t_express_setting"."config" IS '在client的配置';
+COMMENT ON COLUMN "public"."t_express_client_setting"."express_id" IS '快递物流商id';
+
+COMMENT ON COLUMN "public"."t_express_client_setting"."express_config" IS '在client的配置';

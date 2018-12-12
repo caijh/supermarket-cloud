@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface ExpressMapper {
-    Express get(Long expressId);
+    Express get(String expressId);
 
-    List<ExpressClientSetting> findExpressClientSetting(Long expressId);
+    List<ExpressClientSetting> findExpressClientSetting(String expressId);
 }
