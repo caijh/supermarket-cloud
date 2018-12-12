@@ -60,7 +60,7 @@ public class CainiaoExpressClient implements ExpressClient {
             md.update(content.getBytes(charset));
             return new String(Base64.encodeBase64(md.digest()), charset);
         } catch (Exception e) {
-            throw new ExpressRouteException("验证签名失败");
+            throw new ExpressRouteException("验证签名失败", e);
         }
     }
 
