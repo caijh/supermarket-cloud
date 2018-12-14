@@ -22,7 +22,7 @@ public class RedisUtils {
         this.redisTemplate = redisTemplate;
     }
 
-    private RedisTemplate<String, Object> getRedisTemplate() {
+    public RedisTemplate<String, Object> getRedisTemplate() {
         return redisTemplate;
     }
 
