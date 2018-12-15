@@ -26,7 +26,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.2</version>
         </dependency>
         <dependency>
             <groupId>com.coding</groupId>
@@ -44,4 +43,15 @@
             <version>1.0.0</version>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.coding</groupId>
+                <artifactId>commons-base</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
