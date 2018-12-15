@@ -1,7 +1,6 @@
 package com.coding.supermarket.domain.express.service;
 
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Named;
@@ -28,10 +27,8 @@ public class CainiaoExpressClient implements ExpressClient {
 
     @Override
     public ExpressRoute queryExpressRoute(ExpressClientSetting settings, String expressNo) {
-        ExpressRoute expressRoute;
+        ExpressRoute expressRoute = ExpressRoute.noneExpressRoute();
         try {
-            expressRoute = new ExpressRoute();
-            expressRoute.setItems(new ArrayList<>());
             ClientConfig clientConfig = JSON.parseObject(settings.getClientConfig(), ClientConfig.class);
             String expressSupplierCode = JSON.parseObject(settings.getExpressConfig()).getString("expressSupplierCode");
             Map<String, String> reqParams = prepareParams(expressNo, clientConfig, expressSupplierCode);
