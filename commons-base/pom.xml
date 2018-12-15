@@ -103,6 +103,11 @@
                 <artifactId>jsr305</artifactId>
                 <version>3.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>com.coding.commons</groupId>
+                <artifactId>commons-util</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
