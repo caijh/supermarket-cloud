@@ -7,6 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductBaseAttr extends ProductAttr implements Serializable {
+public class ProductAttr implements Serializable {
+
+    private String name;
+
+    /**
+     * 如有
+     */
+    private String value;
 
 }

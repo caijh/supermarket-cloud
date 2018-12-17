@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class ProductSkuExt implements PersistentObject<Long> {
+
     @Id
     private Long productSkuId;
 
@@ -33,4 +34,5 @@ public class ProductSkuExt implements PersistentObject<Long> {
     public Long getId() {
         return this.productSkuId;
     }
+
 }

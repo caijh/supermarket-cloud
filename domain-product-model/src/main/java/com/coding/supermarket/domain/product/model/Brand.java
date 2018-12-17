@@ -43,9 +43,4 @@ public class Brand implements PersistentObject<String> {
 
     private Long updatedBy;
 
-    @Override
-    public String getId() {
-        return id;
-    }
-
 }

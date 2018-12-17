@@ -7,11 +7,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+/**
+ * 产地.
+ */
 @Getter
 @Setter
 public class ProductOrigin implements Serializable {
+
     @Type(type = "jsonb")
     private Country country;
 
     private String address;
+
 }

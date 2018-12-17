@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity(name = "product_category")
 public class Category extends JpaBaseEntity<Long> {
+
     private String name;
 
     private String icon;
@@ -33,7 +34,11 @@ public class Category extends JpaBaseEntity<Long> {
     private Long parentId;
 
     private Long createdBy;
+
     private Date createTime;
+
     private Long updatedBy;
+
     private Date updateTime;
+
 }

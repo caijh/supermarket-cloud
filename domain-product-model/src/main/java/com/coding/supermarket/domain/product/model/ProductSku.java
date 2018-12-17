@@ -1,6 +1,7 @@
 package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
@@ -14,21 +15,27 @@ import org.hibernate.annotations.Type;
 @Setter
 @Entity
 public class ProductSku extends JpaBaseEntity<Long> {
+
     /**
      * 商品id.
      */
     private Long productId;
 
     /**
-     * sku主图.
-     */
-    private String thumbnail;
-
-    /**
      * sku 属性.
      */
     @Type(type = "jsonb")
-    private ProductSkuAttr skuAttr;
+    private List<ProductSkuAttr> skuAttr;
+
+    /**
+     * 条形码.
+     */
+    private String barcode;
+
+    /**
+     * sku主图.
+     */
+    private String thumbnail;
 
     /**
      * 价格,单位分.
@@ -41,17 +48,6 @@ public class ProductSku extends JpaBaseEntity<Long> {
     private Integer referPrice;
 
     /**
-     * 产地.
-     */
-    @Type(type = "jsonb")
-    private ProductOrigin origin;
-
-    /**
-     * 条形码.
-     */
-    private String barcode;
-
-    /**
      * sku商品状态.
      *
      * @see ProductStatus
@@ -59,7 +55,11 @@ public class ProductSku extends JpaBaseEntity<Long> {
     private Integer status;
 
     private Long createdBy;
+
     private Date createTime;
+
     private Long updatedBy;
+
     private Date updateTime;
+
 }
