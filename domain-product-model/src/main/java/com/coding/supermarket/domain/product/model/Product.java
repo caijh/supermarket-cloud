@@ -56,6 +56,12 @@ public class Product extends JpaBaseEntity<Long> {
     private Integer status;
 
     /**
+     * 规格参数.
+     */
+    @Type(type = "jsonb")
+    private List<ProductBaseAttr> baseAttrs;
+
+    /**
      * 商品的sku list.
      */
     @Transient

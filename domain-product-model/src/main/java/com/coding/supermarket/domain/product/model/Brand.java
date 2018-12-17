@@ -2,8 +2,9 @@ package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
-import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import com.coding.commons.base.PersistentObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Brand extends JpaBaseEntity<Long> {
+public class Brand implements PersistentObject<String> {
+
+    @Id
+    private String id;
+
     private String name;
 
     private String logo;
@@ -31,7 +36,16 @@ public class Brand extends JpaBaseEntity<Long> {
     private Long countryId;
 
     private Date createTime;
+
     private Long createdBy;
+
     private Date updateTime;
+
     private Long updatedBy;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
 }

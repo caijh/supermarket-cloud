@@ -17,7 +17,12 @@ public class ProductAttrLabel implements PersistentObject<String> {
     private String id;
 
     /**
-     * color等.
+     * 所属类目id.
+     */
+    private Long categoryId;
+
+    /**
+     * 颜色等.
      */
     private String name;
 
@@ -28,6 +33,6 @@ public class ProductAttrLabel implements PersistentObject<String> {
 
     @Override
     public String getId() {
-        return Base64Utils.encrypt((name + label).getBytes(StandardCharsets.UTF_8));
+        return Base64Utils.encrypt((categoryId + name + label).getBytes(StandardCharsets.UTF_8));
     }
 }

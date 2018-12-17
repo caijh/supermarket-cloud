@@ -1,7 +1,6 @@
 package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
@@ -29,7 +28,7 @@ public class ProductSku extends JpaBaseEntity<Long> {
      * sku 属性.
      */
     @Type(type = "jsonb")
-    private List<ProductSkuAttr> skuAttrs;
+    private ProductSkuAttr skuAttr;
 
     /**
      * 价格,单位分.

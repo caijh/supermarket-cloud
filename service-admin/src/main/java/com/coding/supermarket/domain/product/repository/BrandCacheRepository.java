@@ -9,7 +9,7 @@ import com.coding.supermarket.domain.product.model.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Named
-public class BrandCacheRepository implements CacheRepository<Brand, Long> {
+public class BrandCacheRepository implements CacheRepository<Brand, String> {
 
     @Inject
     private RedisUtils redisUtils;
@@ -23,7 +23,7 @@ public class BrandCacheRepository implements CacheRepository<Brand, Long> {
     }
 
     @Override
-    public JpaRepository<Brand, Long> getJpaRepository() {
+    public JpaRepository<Brand, String> getJpaRepository() {
         return brandRepository;
     }
 

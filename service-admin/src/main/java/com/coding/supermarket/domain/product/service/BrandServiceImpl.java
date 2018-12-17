@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import com.coding.commons.base.BizException;
 import com.coding.commons.base.CommonStatus;
+import com.coding.commons.util.Base64Utils;
 import com.coding.commons.util.BeanUtils;
 import com.coding.commons.util.DateUtils;
 import com.coding.supermarket.domain.product.model.Brand;
@@ -19,13 +20,14 @@ public class BrandServiceImpl implements BrandService {
     private BrandCacheRepository brandCacheRepository;
 
     @Override
-    public JpaRepository<Brand, Long> getRepository() {
+    public JpaRepository<Brand, String> getRepository() {
         return brandCacheRepository;
     }
 
     @Transactional(rollbackOn = Exception.class)
     @Override
     public void add(Brand brand) {
+        brand.setId(Base64Utils.encrypt(brand.getName().getBytes()));
         brand.setStatus(CommonStatus.IN_USE.getIndex());
         brand.setCreateTime(DateUtils.now());
         getRepository().save(brand);
@@ -41,9 +43,10 @@ public class BrandServiceImpl implements BrandService {
 
     @Transactional(rollbackOn = Exception.class)
     @Override
-    public void delete(Long id) throws BizException {
+    public void delete(String id) throws BizException {
         Brand brand = getRepository().findById(id).orElseThrow(() -> new BizException("brand not found"));
         brand.setStatus(CommonStatus.DELETED.getIndex());
         getRepository().save(brand);
     }
+
 }

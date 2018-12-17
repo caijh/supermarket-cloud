@@ -70,8 +70,9 @@ public class AdminBrandController {
      * 删除品牌.
      */
     @GetMapping(value = "/delete")
-    public ResponseEntity<String> delete(@RequestParam Long id) throws BizException {
+    public ResponseEntity<String> delete(@RequestParam String id) throws BizException {
         brandService.delete(id);
         return ResponseEntity.ok("删除成功");
     }
+
 }

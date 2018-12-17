@@ -10,9 +10,8 @@ import org.hibernate.annotations.Type;
 @Getter
 @Setter
 public class ProductSkuAttr implements Serializable {
-    private String name;
 
-    private String displayName;
+    private String name;
 
     /**
      * sku 属性的填值方式.
@@ -34,4 +33,5 @@ public class ProductSkuAttr implements Serializable {
 
     @Type(type = "jsonb")
     private List<ProductAttrLabel> attrs;
+
 }
