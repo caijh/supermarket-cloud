@@ -1,4 +1,4 @@
-package com.coding.serviceproduct.config;
+package com.coding.supermarket.serviceproduct.config;
 
 import com.coding.commons.base.data.redis.RedisUtils;
 import org.springframework.context.annotation.Bean;

@@ -1,12 +1,12 @@
-package com.coding.serviceproduct.controller;
+package com.coding.supermarket.serviceproduct.controller;
 
 import java.util.List;
 import javax.inject.Inject;
 
 import com.coding.commons.base.BizException;
 import com.coding.commons.util.BeanUtils;
-import com.coding.serviceproduct.request.product.ProductListReqBody;
-import com.coding.serviceproduct.request.product.ProductSkuListReqBody;
+import com.coding.supermarket.serviceproduct.request.product.ProductListReqBody;
+import com.coding.supermarket.serviceproduct.request.product.ProductSkuListReqBody;
 import com.coding.supermarket.domain.product.model.Product;
 import com.coding.supermarket.domain.product.model.ProductStatus;
 import com.coding.supermarket.domain.product.service.ProductService;

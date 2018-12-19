@@ -1,4 +1,4 @@
-package com.coding.serviceproduct.request.product;
+package com.coding.supermarket.serviceproduct.request.product;
 
 import com.coding.commons.base.AbstractListReqBody;
 import lombok.Getter;
