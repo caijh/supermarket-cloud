@@ -1,13 +1,11 @@
 package com.coding.supermarket.domain.product.model;
 
-import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import com.coding.commons.base.PersistentObject;
-import com.coding.commons.util.Base64Utils;
+import com.coding.commons.base.data.jpa.JpaBaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.Entity;
+import java.util.Date;
 
 /**
  * 用户收藏的商品.
@@ -15,18 +13,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class ProductFavorite implements PersistentObject<String> {
+public class ProductFavorite extends JpaBaseEntity<Long> {
 
     private Long userId;
 
     private Long productId;
 
     private Date createTime;
-
-    @Id
-    @Override
-    public String getId() {
-        return Base64Utils.encrypt((String.valueOf(userId) + String.valueOf(productId)).getBytes());
-    }
 
 }

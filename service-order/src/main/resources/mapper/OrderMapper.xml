@@ -12,6 +12,10 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <insert id="add">
+        insert into t_order(id, amount, create_time, no, pay_amount, status, update_time, user_id) value (#{id}, #{amount}, #{createTime},#{no},#{payAmount},#{status},#{updateTime},#{userId})
+    </insert>
+
     <select id="get" resultMap="Order">
         select * from t_order when id = #{id}
     </select>

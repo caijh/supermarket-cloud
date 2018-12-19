@@ -11,14 +11,6 @@ import lombok.Setter;
 @Setter
 public class OrderPreReqBody implements ReqBody {
 
-    @Getter
-    @Setter
-    public static class ProductToBuy {
-        private Long productSkuId;
-        private Integer price;
-        private Integer num;
-    }
-
     private List<ProductToBuy> products;
 
 

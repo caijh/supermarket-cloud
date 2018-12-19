@@ -29,4 +29,6 @@ public class ProductSku {
 
     private Integer soldNum;
 
+    private Integer status;
+
 }

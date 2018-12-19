@@ -10,4 +10,6 @@ public interface OrderMapper {
 
     Order get(Long id);
 
+    void add(Order order);
+
 }
