@@ -52,7 +52,7 @@ swagger:
   enabled: true
   title: service-admin
   description: service-admin
-  base-package: com.coding.serviceadmin.controller
+  base-package: com.coding.supermarket.serviceadmin.controller
 
 management:
   endpoints:
