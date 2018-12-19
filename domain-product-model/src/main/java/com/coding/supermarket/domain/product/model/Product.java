@@ -1,15 +1,15 @@
 package com.coding.supermarket.domain.product.model;
 
-import java.util.Date;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
-
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 商品.
@@ -35,12 +35,20 @@ public class Product extends JpaBaseEntity<Long> {
 
     /**
      * 所属品牌.
+     *
+     * @see Brand
      */
     private Long brandId;
 
+    /**
+     * 图册.
+     */
     @Type(type = "jsonb")
     private List<String> thumbnails;
 
+    /**
+     * 详情.
+     */
     @Column(columnDefinition = "TEXT")
     private String description;
 

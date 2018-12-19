@@ -1,13 +1,16 @@
 package com.coding.supermarket.domain.product.model;
 
-import java.util.List;
-import javax.persistence.Entity;
-
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+import javax.persistence.Entity;
+import java.util.List;
+
+/**
+ * 分类下商品的属性.
+ */
 @Getter
 @Setter
 @Entity(name = "category_product_attr")
