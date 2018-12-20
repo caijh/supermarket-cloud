@@ -1,6 +1,7 @@
 INSERT INTO "public"."t_country"("id", "abbreviation", "en_name", "first_char", "full_en_name", "name") VALUES (86, 'CN', 'China', 'C', '', '中国');
 INSERT INTO "public"."t_area"("code", "country_id", "name", "parent_code") VALUES('440000', '86', '广东省', NULL);
-INSERT INTO "public"."t_area"("code", "country_id", "name", "parent_code") VALUES('440100', '86', '广州市', 440000);
+INSERT INTO "public"."t_area"("code", "country_id", "name", "parent_code") VALUES('440100', '86', '广州市', '440000');
+INSERT INTO "public"."t_area"("code", "country_id", "name", "parent_code") VALUES ('440106', '86', '天河区', '440100');
 
 INSERT INTO t_role (id, code, name, created_by, create_time, updated_by, update_time, is_sys_defined)
 VALUES (10000, 'ROLE_ADMIN', '管理员角色', NULL, NULL, NULL, NULL, TRUE);
@@ -57,8 +58,10 @@ VALUES (10000, 10020000),
        (10000, 10020300),
        (10000, 10020400);
 
+INSERT INTO "public"."t_shop"("id", "address", "create_time", "created_by", "introduction", "name", "status", "thumbnails", "update_time", "updated_by", "user_id") VALUES (1000000, '[{"id": "440000", "code": "440000", "name": "广东省", "countryId": 86, "parentCode": null}, {"id": "440100", "code": "440100", "name": "广州市", "countryId": 86, "parentCode": "440000"}, {"id": "440106", "code": "440106", "name": "天河区", "countryId": 86, "parentCode": "440100"}]', '2018-12-20 17:00:09.353', 10000, '俊辉的自家店', '自营门店', 0, '[]', NULL, NULL, 10000);
 
 INSERT INTO "public"."t_express"("id", "name") VALUES (encode('圆通速递(国内)', 'base64'), '圆通速递(国内)');
 
 
 INSERT INTO "public"."t_express_client_setting"("client", "express_id", "express_config") VALUES ('cainiaoExpressClient', encode('圆通速递(国内)', 'base64'), '{"expressSupplierCode":"YTO"}');
+
