@@ -5,7 +5,7 @@ spring:
     port: 6379
     database: 0
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/supermarket
+    url: jdbc:postgresql://127.0.0.1:5432/supermarket-base
     username: supermarket
     password: supermarket
     driver-class-name: org.postgresql.Driver
