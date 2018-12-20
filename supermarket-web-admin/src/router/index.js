@@ -5,6 +5,7 @@ import Framework from '@/components/AppFramework'
 import Dashboard from '@/views/Dashboard'
 import RoleList from '@/views/role/RoleList'
 import UserList from '@/views/user/UserList'
+import ShopList from '@/views/shop/ShopList'
 
 Vue.use(Router)
 
@@ -33,6 +34,10 @@ export default new Router({
         {
           path: 'admin/user/list',
           component: UserList
+        },
+        {
+          path: 'admin/shop/list',
+          component: ShopList
         }
       ]
     }

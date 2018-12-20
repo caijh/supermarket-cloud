@@ -111,5 +111,119 @@
         ]
       }
     ]
+  },
+  {
+    "id": 20000000,
+    "type": 1,
+    "icon": null,
+    "displayName": "门店管理",
+    "url": "/admin/shop/list",
+    "parentId": null,
+    "depends": null,
+    "subs": [
+      {
+        "id": 20010000,
+        "type": 2,
+        "icon": null,
+        "displayName": "新增",
+        "url": "/admin/shop/add",
+        "parentId": 20000000,
+        "depends": null,
+        "subs": null
+      },
+      {
+        "id": 20020000,
+        "type": 2,
+        "icon": null,
+        "displayName": "修改",
+        "url": "/admin/shop/update",
+        "parentId": 20000000,
+        "depends": null,
+        "subs": null
+      }
+    ]
+  },
+  {
+    "id": 30000000,
+    "type": 1,
+    "icon": null,
+    "displayName": "商品相关管理",
+    "url": null,
+    "parentId": null,
+    "depends": null,
+    "subs": [
+      {
+        "id": 30010000,
+        "type": 1,
+        "icon": null,
+        "displayName": "分类管理",
+        "url": "/admin/product/category/list",
+        "parentId": 30000000,
+        "depends": null,
+        "subs": [
+          {
+            "id": 30010100,
+            "type": 2,
+            "icon": null,
+            "displayName": "新增",
+            "url": "/admin/product/category/add",
+            "parentId": 30010000,
+            "depends": null,
+            "subs": null
+          },
+          {
+            "id": 30010200,
+            "type": 2,
+            "icon": null,
+            "displayName": "修改",
+            "url": "/admin/product/category/update",
+            "parentId": 30010000,
+            "depends": null,
+            "subs": null
+          }
+        ]
+      },
+      {
+        "id": 30020000,
+        "type": 1,
+        "icon": null,
+        "displayName": "商品管理",
+        "url": "/admin/product/list",
+        "parentId": 30000000,
+        "depends": null,
+        "subs": [
+          {
+            "id": 30020100,
+            "type": 2,
+            "icon": null,
+            "displayName": "新增",
+            "url": "/admin/product/add",
+            "parentId": 30020000,
+            "depends": null,
+            "subs": null
+          },
+          {
+            "id": 30020200,
+            "type": 2,
+            "icon": null,
+            "displayName": "修改",
+            "url": "/admin/product/delete",
+            "parentId": 30020000,
+            "depends": null,
+            "subs": null
+          },
+          {
+            "id": 30020300,
+            "type": 2,
+            "icon": null,
+            "displayName": "查看",
+            "url": "/admin/product/detail",
+            "parentId": 30020000,
+            "depends": null,
+            "subs": null
+          }
+        ]
+      }
+    ]
   }
 ]
