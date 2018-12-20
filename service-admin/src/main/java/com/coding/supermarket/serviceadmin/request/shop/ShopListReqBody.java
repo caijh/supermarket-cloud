@@ -7,5 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ShopListReqBody extends AbstractListReqBody {
+
     private String name;
+
+    private Long userId;
+
 }

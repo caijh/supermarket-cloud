@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.coding.commons.base.BizException;
+import com.coding.commons.base.CommonStatus;
 import com.coding.commons.base.locale.LocaleMessageService;
 import com.coding.commons.util.BeanUtils;
 import com.coding.commons.util.DateUtils;
@@ -29,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void add(Category category) {
         category.setCreateTime(DateUtils.now());
+        category.setStatus(CommonStatus.IN_USE.getIndex());
         getRepository().save(category);
     }
 

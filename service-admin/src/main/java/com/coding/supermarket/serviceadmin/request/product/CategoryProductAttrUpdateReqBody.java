@@ -9,7 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CategoryProductAttrUpdateReqBody implements ReqBody {
-    private String id;
+
+    private Long id;
 
     private String name;
 

@@ -22,9 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.coding.commons.base.CommonStatus.IN_USE;
+
 @RestController
 @RequestMapping(value = "/admin/shop")
 public class AdminShopController {
+
     @Inject
     private ShopService shopService;
 
@@ -38,6 +41,7 @@ public class AdminShopController {
     public ResponseEntity<Page<Shop>> list(@RequestBody ShopListReqBody reqBody) {
         Shop shop = new Shop();
         shop.setName(reqBody.getName());
+        shop.setStatus(IN_USE.getIndex());
         Page<Shop> page = shopService.list(shop, PageRequest.of(reqBody.getPageNo(), reqBody.getPageSize()));
 
         return ResponseEntity.ok(page);
@@ -77,4 +81,5 @@ public class AdminShopController {
         shopService.update(shop);
         return ResponseEntity.ok(localeMessageService.getMessage(Operate.UPDATE_SUCCESS));
     }
+
 }
