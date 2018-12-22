@@ -10,6 +10,19 @@
         <AppNavbar></AppNavbar>
       </div>
       <div class="column">
+        <nav aria-label="breadcrumbs" class="breadcrumb">
+          <ul>
+            <li :class="{'is-active': index === routerList.length -1}" :key="resource.id"
+                v-for="(resource, index) in routerList">
+              <a href="#">
+                <span class="icon is-small" v-if="resource.icon">
+                  <i :class="resource.icon" aria-hidden="true"></i>
+                </span>
+                <span>{{resource.displayName}}</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
         <router-view></router-view>
       </div>
     </div>
@@ -30,6 +43,11 @@
     name: 'app-framework',
     components: {AppHeader: AppHeader, AppNavbar: AppNavbar, AppFooter: AppFooter},
     beforeMount () {
+    },
+    computed: {
+      routerList () {
+        return this.$router.meta.routerList
+      }
     }
   }
 </script>

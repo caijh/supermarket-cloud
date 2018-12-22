@@ -11,7 +11,8 @@ const userModule = {
       userId: '',
       jti: ''
     },
-    users: []
+    users: [],
+    resources: []
   },
   getters: {
     getUserToken (state) {
@@ -22,6 +23,9 @@ const userModule = {
         }
       }
       return state.userToken
+    },
+    getResources (state) {
+      return state.resources
     }
   },
   mutations: {
@@ -43,6 +47,9 @@ const userModule = {
     },
     setUsers (state, users) {
       state.users = users
+    },
+    saveResources (state, resources) {
+      state.resources = resources
     }
   },
   actions: {
@@ -66,6 +73,10 @@ const userModule = {
     },
     getResources: ({commit}, {userId}) => {
       return client.userApi.getResources(userId)
+        .then(resp => {
+          commit('saveResources', resp.data)
+          return Promise.resolve(resp)
+        })
     },
     listUser: ({commit}, reqBody) => {
       return client.userApi.listUser(reqBody)
