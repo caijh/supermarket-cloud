@@ -25,6 +25,13 @@ const userModule = {
       return state.userToken
     },
     getResources (state) {
+      if (state.resources.length > 0) {
+        return state.resources
+      }
+      let resources = JSON.parse(localStorage.getItem('resources'))
+      if (resources) {
+        state.resources = resources
+      }
       return state.resources
     }
   },
@@ -50,6 +57,7 @@ const userModule = {
     },
     saveResources (state, resources) {
       state.resources = resources
+      localStorage.setItem('resources', JSON.stringify(state.resources))
     }
   },
   actions: {

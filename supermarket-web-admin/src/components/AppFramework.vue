@@ -12,8 +12,8 @@
       <div class="column">
         <nav aria-label="breadcrumbs" class="breadcrumb">
           <ul>
-            <li :class="{'is-active': index === routerList.length -1}" :key="resource.id"
-                v-for="(resource, index) in routerList">
+            <li :class="{'is-active': index === ($route.meta.routeList.length -1)}" :key="resource.id"
+                v-for="(resource, index) in $route.meta.routeList">
               <a href="#">
                 <span class="icon is-small" v-if="resource.icon">
                   <i :class="resource.icon" aria-hidden="true"></i>
@@ -43,11 +43,6 @@
     name: 'app-framework',
     components: {AppHeader: AppHeader, AppNavbar: AppNavbar, AppFooter: AppFooter},
     beforeMount () {
-    },
-    computed: {
-      routerList () {
-        return this.$router.meta.routerList
-      }
     }
   }
 </script>

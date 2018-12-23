@@ -2,7 +2,7 @@
   {
     "id": 10000000,
     "type": 1,
-    "icon": null,
+    "icon": "fas fa-cog fa-fw",
     "displayName": "系统管理",
     "url": null,
     "parentId": null,
@@ -11,7 +11,7 @@
       {
         "id": 10020000,
         "type": 1,
-        "icon": null,
+        "icon": "fa fa-users",
         "displayName": "用户管理",
         "url": "/admin/user/list",
         "parentId": 10000000,
@@ -62,7 +62,7 @@
       {
         "id": 10010000,
         "type": 1,
-        "icon": null,
+        "icon": "fa fa-ghost",
         "displayName": "角色管理",
         "url": "/admin/role/list",
         "parentId": 10000000,
