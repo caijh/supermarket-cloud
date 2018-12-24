@@ -2,14 +2,18 @@ package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import javax.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @Setter

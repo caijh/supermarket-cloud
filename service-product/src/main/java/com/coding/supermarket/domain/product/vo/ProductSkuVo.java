@@ -24,4 +24,6 @@ public class ProductSkuVo implements RespBody {
     private Integer stockNum;
     private Integer frozenNum;
     private Integer soldNum;
+
+    private ProductVo productVo;
 }
