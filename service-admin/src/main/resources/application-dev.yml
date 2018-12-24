@@ -5,7 +5,7 @@ spring:
     encoding:
       charset: utf-8
   messages:
-    basename: i18n/core/messages
+    basename: i18n/core/messages,i18n/biz/messages
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: true

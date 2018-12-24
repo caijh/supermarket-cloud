@@ -52,8 +52,9 @@ public class ProductServiceImpl implements ProductService {
         getRepository().save(product);
 
         product.getSkuList().forEach(productSku -> {
-            product.setCreatedBy(product.getCreatedBy());
-            product.setCreateTime(product.getCreateTime());
+            productSku.setId(null);
+            productSku.setCreatedBy(product.getCreatedBy());
+            productSku.setCreateTime(product.getCreateTime());
             productSku.setStatus(ProductStatus.OFF_SALE.getIndex());
             productSku.setProductId(product.getId());
             productSkuCacheRepository.save(productSku);
