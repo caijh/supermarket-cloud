@@ -3,15 +3,17 @@ package com.coding.commons.base.data.jpa.repository;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import javax.persistence.EntityNotFoundException;
 
 import com.coding.commons.base.PersistentObject;
 import com.coding.commons.base.data.redis.ProtoStuffSerializerUtils;
 import com.coding.commons.base.data.redis.RedisUtils;
+import com.coding.commons.base.data.redis.Wrapper;
+import javax.annotation.Nonnull;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,45 +31,48 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
 
     RedisUtils getRedisUtils();
 
+    default String getEntityRedisNamespace(Class<?> clazz) {
+        return clazz.getSimpleName() + ":";
+    }
+
     default String getEntityRedisKey(I id) {
-        return getEntityClass().getSimpleName() + ":" + id;
+        return getEntityRedisNamespace(getEntityClass()) + id;
     }
 
     default String getEntityRedisKeyPattern() {
-        return getEntityClass().getSimpleName() + ":" + "*";
+        return getEntityRedisNamespace(getEntityClass()) + "*";
     }
 
     @Nonnull
     @Override
     default List<E> findAllById(@Nonnull Iterable<I> ids) {
-        List<E> list = new ArrayList<>();
-        ids.forEach(id -> findById(id).ifPresent(list::add));
-        return list;
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAllById:" + new String(ProtoStuffSerializerUtils.serialize(new Wrapper<>(ids)), StandardCharsets.UTF_8);
+        List<E> list = getRedisUtils().getList(key, getEntityClass());
+        if (list != null) {
+            return list;
+        }
+        List<E> entities = getJpaRepository().findAllById(ids);
+        getRedisUtils().setList(key, entities, getEntityClass());
+        return entities;
     }
 
     @Nonnull
     @Override
     default List<E> findAll() {
-        List<E> all = getJpaRepository().findAll();
-        List<String> keys = all.parallelStream().map(e -> e.getClass() + ":" + e.getId()).collect(Collectors.toList());
-        getRedisUtils().del(keys);
-        return all;
+        return getJpaRepository().findAll();
     }
 
     @Nonnull
     @Override
     default List<E> findAll(@Nonnull Sort sort) {
-        List<E> all = getJpaRepository().findAll(sort);
-        List<String> keys = all.parallelStream().map(e -> e.getClass() + ":" + e.getId()).collect(Collectors.toList());
-        getRedisUtils().del(keys);
-        return all;
+        return getJpaRepository().findAll(sort);
     }
 
     @SuppressWarnings("unchecked")
     @Nonnull
     @Override
     default Page<E> findAll(@Nonnull Pageable pageable) {
-        String key = getEntityClass().getSimpleName() + ":page:" + new String(ProtoStuffSerializerUtils.serialize(pageable), StandardCharsets.UTF_8);
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:" + new String(ProtoStuffSerializerUtils.serialize(pageable), StandardCharsets.UTF_8);
         Page<E> cachePage = getRedisUtils().get(key, Page.class);
         if (cachePage != null) {
             return cachePage;
@@ -81,26 +86,36 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     @Nonnull
     @Override
     default <S extends E> List<S> findAll(@Nonnull Example<S> example) {
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:" + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8);
+        List<S> list = getRedisUtils().getList(key, example.getProbeType());
+        if (list != null) {
+            return list;
+        }
         List<S> entities = getJpaRepository().findAll(example);
-        Class<S> probeType = example.getProbeType();
-        entities.forEach(e -> getRedisUtils().set(probeType.getSimpleName() + ":" + e.getId(), e));
+        getRedisUtils().setList(key, entities, example.getProbeType());
         return entities;
     }
 
     @Nonnull
     @Override
     default <S extends E> List<S> findAll(@Nonnull Example<S> example, @Nonnull Sort sort) {
-        List<S> all = getJpaRepository().findAll(example, sort);
-        Class<S> probeType = example.getProbeType();
-        all.forEach(e -> getRedisUtils().set(probeType.getSimpleName() + ":" + e.getId(), e));
-        return all;
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:"
+            + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8)
+            + new String(ProtoStuffSerializerUtils.serialize(sort), StandardCharsets.UTF_8);
+        List<S> list = getRedisUtils().getList(key, example.getProbeType());
+        if (list != null) {
+            return list;
+        }
+        List<S> entities = getJpaRepository().findAll(example, sort);
+        getRedisUtils().setList(key, entities, example.getProbeType());
+        return entities;
     }
 
     @SuppressWarnings("unchecked")
     @Nonnull
     @Override
     default <S extends E> Page<S> findAll(@Nonnull Example<S> example, @Nonnull Pageable pageable) {
-        String key = getEntityClass().getSimpleName() + ":page:"
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:"
             + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8)
             + new String(ProtoStuffSerializerUtils.serialize(pageable), StandardCharsets.UTF_8);
         Page cachePage = getRedisUtils().get(key, Page.class);
@@ -115,8 +130,8 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
 
     @Override
     default long count() {
-        String key = getEntityClass().getSimpleName() + ":count";
-        Integer cacheCount = getRedisUtils().get(key, Integer.class);
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:count";
+        Long cacheCount = getRedisUtils().get(key, Long.class);
         if (cacheCount != null) {
             return cacheCount;
         }
@@ -127,8 +142,8 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
 
     @Override
     default <S extends E> long count(@Nonnull Example<S> example) {
-        String key = getEntityClass().getSimpleName() + ":count:" + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8);
-        Integer cacheCount = getRedisUtils().get(key, Integer.class);
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:count:" + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8);
+        Long cacheCount = getRedisUtils().get(key, Long.class);
         if (cacheCount != null) {
             return cacheCount;
         }
@@ -141,55 +156,59 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     default void deleteById(@Nonnull I id) {
         getJpaRepository().deleteById(id);
         getRedisUtils().del(getEntityRedisKey(id));
+        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
     default void delete(@Nonnull E entity) {
         getJpaRepository().delete(entity);
         getRedisUtils().del(getEntityRedisKey(entity.getId()));
+        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
     default void deleteAll(@Nonnull Iterable<? extends E> iterable) {
         getJpaRepository().deleteAll(iterable);
         List<String> keys = new ArrayList<>();
-        iterable.forEach(t -> keys.add(t.getClass().getSimpleName() + ":" + t.getId()));
+        iterable.forEach(t -> keys.add(getEntityRedisNamespace(getEntityClass()) + t));
         getRedisUtils().del(keys);
+        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
     default void deleteAll() {
         getJpaRepository().deleteAll();
         getRedisUtils().del(getEntityRedisKeyPattern());
+        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
-    @SuppressWarnings("unchecked")
     @Nonnull
     @Override
     default <S extends E> List<S> saveAll(@Nonnull Iterable<S> entities) {
         List<S> list = getJpaRepository().saveAll(entities);
-        list.forEach(entity -> {
-            Class<S> clazz = (Class<S>) entity.getClass();
-            String key = clazz.getSimpleName() + ":" + entity.getId();
-            getRedisUtils().set(key, entity);
-        });
+        Map<String, S> map = new HashMap<>();
+        list.forEach(e -> map.put(getEntityRedisNamespace(e.getClass()) + e.getId(), e));
+        getRedisUtils().getRedisTemplate().opsForValue().multiSet(map);
+        getRedisUtils().del(getEntityRedisNamespace(list.get(0).getClass()) + "Method:*");
         return list;
     }
 
     @Nonnull
     @Override
     default <S extends E> Optional<S> findOne(@Nonnull Example<S> example) {
-        String key = getEntityClass().getSimpleName() + ":findOne:"
+        String key = getEntityRedisNamespace(example.getProbeType()) + "Method:findOne:"
             + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8);
-        Class<S> typeArgument = example.getProbeType();
-        S cache = getRedisUtils().get(key, typeArgument);
-        if (cache != null) {
-            return Optional.of(cache);
-        } else {
-            Optional<S> optionalS = getJpaRepository().findOne(example);
-            optionalS.ifPresent(s -> getRedisUtils().set(key, s));
-            return optionalS;
+        S s = getRedisUtils().get(key, example.getProbeType());
+        if (s != null) {
+            return Optional.of(s);
         }
+
+        Optional<S> optional = getJpaRepository().findOne(example);
+        optional.ifPresent(entity -> {
+            getRedisUtils().set(key, entity);
+            getRedisUtils().set(getEntityRedisKey(entity.getId()), entity);
+        });
+        return optional;
     }
 
     @Override
@@ -219,14 +238,13 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         List<String> keys = new ArrayList<>();
         iterable.forEach(t -> keys.add(getEntityRedisKey(t.getId())));
         getRedisUtils().del(keys);
+        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
     default void deleteAllInBatch() {
-        List<E> list = getJpaRepository().findAll();
         getJpaRepository().deleteAllInBatch();
-        getRedisUtils()
-            .del(list.stream().map(t -> getEntityRedisKey(t.getId())).collect(Collectors.toList()));
+        getRedisUtils().del(getEntityRedisKeyPattern());
     }
 
     @Nonnull
@@ -267,7 +285,8 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     @Override
     default <S extends E> S save(@Nonnull S entity) {
         entity = getJpaRepository().save(entity);
-        getRedisUtils().set(entity.getClass().getSimpleName() + ":" + entity.getId(), entity);
+        getRedisUtils().set(getEntityRedisNamespace(entity.getClass()) + entity.getId(), entity);
+        getRedisUtils().del(getEntityRedisNamespace(entity.getClass()) + "Method:*");
         return entity;
     }
 
