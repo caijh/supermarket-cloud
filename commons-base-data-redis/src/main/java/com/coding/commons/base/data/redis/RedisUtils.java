@@ -67,7 +67,7 @@ public class RedisUtils {
      * get cache object.
      *
      * @param key         key
-     * @param targetClass value的对象的class
+     * @param clazz value的对象的class
      * @return T the has been cache object.
      */
     @SuppressWarnings("unchecked")
