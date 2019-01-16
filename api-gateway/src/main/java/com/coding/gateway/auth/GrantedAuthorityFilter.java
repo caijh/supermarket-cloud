@@ -32,7 +32,7 @@ public class GrantedAuthorityFilter extends OncePerRequestFilter {
         String servletPath = request.getServletPath();
 
         if (!ANONYMOUS_ENDPOINTS.contains(servletPath)) {
-            List<String> roles = redisUtils.getListCache(Resource.GRANTED_URL_PREFIX + servletPath, String.class);
+            List<String> roles = redisUtils.getList(Resource.GRANTED_URL_PREFIX + servletPath, String.class);
 
             if (CollectionUtils.isNotEmpty(roles)) {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
