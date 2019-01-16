@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -42,6 +42,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Inject
     private AdditionalClaimsTokenEnhancer tokenEnhancer;
+
+    @Inject
+    private PasswordEncoder passwordEncoder;
 
     /**
      * JwtAccessTokenConverter.
@@ -72,7 +75,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()");
         security.checkTokenAccess("isAuthenticated()");
-        security.passwordEncoder(NoOpPasswordEncoder.getInstance());
+        security.passwordEncoder(passwordEncoder);
     }
 
     @Override
