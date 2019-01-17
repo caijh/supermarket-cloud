@@ -66,6 +66,9 @@ public class RedisUtilsTest {
 
         redisUtils.del("integer");
         redisUtils.del(Arrays.asList("list", "map", "list2"));
+
+        redisUtils.set("test", "test", 0L);
+        redisUtils.del("test");
     }
 
 }
