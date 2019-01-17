@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.Nonnull;
+import javax.persistence.EntityNotFoundException;
 
 import com.coding.commons.base.PersistentObject;
 import com.coding.commons.base.data.redis.ProtoStuffSerializerUtils;
 import com.coding.commons.base.data.redis.RedisUtils;
 import com.coding.commons.base.data.redis.Wrapper;
-import javax.annotation.Nonnull;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -267,18 +267,18 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     default E getOne(@Nonnull I id) {
         String key = getEntityRedisKey(id);
 
-        E obj = getRedisUtils().get(key, getEntityClass());
-        if (obj != null) {
-            return obj;
+        E entity = getRedisUtils().get(key, getEntityClass());
+        if (entity != null) {
+            return entity;
         } else {
             Optional<E> optional = getJpaRepository().findById(id);
             if (!optional.isPresent()) {
                 throw new EntityNotFoundException();
             }
-            obj = optional.get();
-            getRedisUtils().set(key, obj);
+            entity = optional.get();
+            getRedisUtils().set(key, entity);
         }
-        return obj;
+        return entity;
     }
 
     @Nonnull
