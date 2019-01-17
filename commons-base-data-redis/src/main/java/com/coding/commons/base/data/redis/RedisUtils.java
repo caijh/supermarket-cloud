@@ -57,7 +57,12 @@ public class RedisUtils {
     }
 
     private void setEx(byte[] keyBytes, byte[] serializeValue, Long expire) {
-        boolean ret = Optional.ofNullable(getRedisTemplate().execute((RedisCallback<Boolean>) redisConnection -> redisConnection.setEx(keyBytes, expire, serializeValue))).orElse(true);
+        boolean ret;
+        if (expire > 0) {
+            ret = Optional.ofNullable(getRedisTemplate().execute((RedisCallback<Boolean>) redisConnection -> redisConnection.setEx(keyBytes, expire, serializeValue))).orElse(true);
+        } else {
+            ret = Optional.ofNullable(getRedisTemplate().execute((RedisCallback<Boolean>) redisConnection -> redisConnection.set(keyBytes, serializeValue))).orElse(true);
+        }
         if (!ret) {
             throw new RedisCacheException();
         }
