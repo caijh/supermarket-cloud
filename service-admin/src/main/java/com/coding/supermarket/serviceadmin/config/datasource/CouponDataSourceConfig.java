@@ -35,7 +35,8 @@ public class CouponDataSourceConfig {
                       .properties(HibernateProperties.from(jpaProperties))
                       .jta(true)
                       .packages("com.coding.supermarket.domain.coupon")
-            .persistenceUnit("couponPersistenceUnit").build();
+                      .persistenceUnit("couponPersistenceUnit")
+                      .build();
     }
 
 }

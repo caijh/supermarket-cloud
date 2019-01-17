@@ -31,12 +31,11 @@ public class OrderDataSourceConfig {
     @Bean(name = "orderEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder,
                                                                            JpaProperties jpaProperties) {
-        return builder
-            .dataSource(orderDataSource())
-            .properties(HibernateProperties.from(jpaProperties))
-            .jta(true)
-            .packages("com.coding.supermarket.domain.order")
-            .persistenceUnit("orderPersistenceUnit").build();
+        return builder.dataSource(orderDataSource())
+                      .properties(HibernateProperties.from(jpaProperties))
+                      .jta(true)
+                      .packages("com.coding.supermarket.domain.order")
+                      .persistenceUnit("orderPersistenceUnit").build();
     }
 
 }
