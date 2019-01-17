@@ -39,7 +39,8 @@ public class GrantedAuthorityServiceImpl implements GrantedAuthorityService {
         initUrlRoleCodesMap();
 
         for (Map.Entry<String, Set<String>> entry : urlRoleCodesMap.entrySet()) {
-            redisUtils.setCache(Resource.GRANTED_URL_PREFIX + entry.getKey(), new ArrayList<>(entry.getValue()), String.class);
+            redisUtils.setList(Resource.GRANTED_URL_PREFIX + entry.getKey(), new ArrayList<>(entry
+                .getValue()), String.class, 0L);
         }
         return urlRoleCodesMap;
     }
@@ -54,7 +55,8 @@ public class GrantedAuthorityServiceImpl implements GrantedAuthorityService {
             }
         }));
         for (Map.Entry<String, Set<String>> entry : urlRoleCodesMap.entrySet()) {
-            redisUtils.setCache(Resource.GRANTED_URL_PREFIX + entry.getKey(), new ArrayList<>(entry.getValue()), String.class);
+            redisUtils.setList(Resource.GRANTED_URL_PREFIX + entry.getKey(), new ArrayList<>(entry
+                .getValue()), String.class, 0L);
         }
     }
 

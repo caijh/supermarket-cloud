@@ -7,27 +7,6 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: true
-  datasource:
-    base:
-      url: jdbc:postgresql://127.0.0.1:5432/supermarket-base
-      username: supermarket
-      password: supermarket
-      driver-class-name: org.postgresql.Driver
-    product:
-      url: jdbc:postgresql://127.0.0.1:5432/supermarket-product
-      username: supermarket
-      password: supermarket
-      driver-class-name: org.postgresql.Driver
-    order:
-      url: jdbc:postgresql://127.0.0.1:5432/supermarket-order
-      username: supermarket
-      password: supermarket
-      driver-class-name: org.postgresql.Driver
-    coupon:
-      url: jdbc:postgresql://127.0.0.1:5432/supermarket-coupon
-      username: supermarket
-      password: supermarket
-      driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -36,6 +15,59 @@ spring:
     properties:
       hibernate.jdbc.lob.non_contextual_creation: true
       hibernate.dialect: com.coding.commons.base.data.jpa.CustomPostgreSQLDialect
+  jta:
+    enabled: true
+    transaction-manager-id: service-admin
+    atomikos:
+      properties:
+        service: com.atomikos.icatch.standalone.UserTransactionServiceFactory
+        max-actives: 200
+        enable-logging: true
+      datasource:
+        base:
+          unique-resource-name: baseDataSource
+          max-pool-size: 5
+          min-pool-size: 1
+          max-life-time: 20000
+          borrow-connection-timeout: 10000
+          xa-data-source-class-name: org.postgresql.xa.PGXADataSource
+          xa-properties:
+            user: supermarket
+            password: supermarket
+            url: jdbc:postgresql://127.0.0.1:5432/supermarket-base
+        product:
+          unique-resource-name: productDataSource
+          max-pool-size: 5
+          min-pool-size: 1
+          max-life-time: 20000
+          borrow-connection-timeout: 10000
+          xa-data-source-class-name: org.postgresql.xa.PGXADataSource
+          xa-properties:
+            user: supermarket
+            password: supermarket
+            url: jdbc:postgresql://127.0.0.1:5432/supermarket-product
+        order:
+          unique-resource-name: orderDataSource
+          max-pool-size: 5
+          min-pool-size: 1
+          max-life-time: 20000
+          borrow-connection-timeout: 10000
+          xa-data-source-class-name: org.postgresql.xa.PGXADataSource
+          xa-properties:
+            user: supermarket
+            password: supermarket
+            url: jdbc:postgresql://127.0.0.1:5432/supermarket-order
+        coupon:
+          unique-resource-name: couponDataSource
+          max-pool-size: 5
+          min-pool-size: 1
+          max-life-time: 20000
+          borrow-connection-timeout: 10000
+          xa-data-source-class-name: org.postgresql.xa.PGXADataSource
+          xa-properties:
+            user: supermarket
+            password: supermarket
+            url: jdbc:postgresql://127.0.0.1:5432/supermarket-coupon
   redis:
     host: 127.0.0.1
     port: 6379
