@@ -18,7 +18,7 @@ public class RedisUtilsTest {
     private RedisUtils redisUtils;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory("127.0.0.1", 6379);
         connectionFactory.afterPropertiesSet();
