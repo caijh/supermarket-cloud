@@ -156,14 +156,14 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     default void deleteById(@Nonnull I id) {
         getJpaRepository().deleteById(id);
         getRedisUtils().del(getEntityRedisKey(id));
-        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
     default void delete(@Nonnull E entity) {
         getJpaRepository().delete(entity);
         getRedisUtils().del(getEntityRedisKey(entity.getId()));
-        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
@@ -172,14 +172,14 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         List<String> keys = new ArrayList<>();
         iterable.forEach(t -> keys.add(getEntityRedisNamespace(getEntityClass()) + t));
         getRedisUtils().del(keys);
-        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
     default void deleteAll() {
         getJpaRepository().deleteAll();
-        getRedisUtils().del(getEntityRedisKeyPattern());
-        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        getRedisUtils().delBatch(getEntityRedisKeyPattern());
+        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Nonnull
@@ -189,7 +189,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         Map<String, S> map = new HashMap<>();
         list.forEach(e -> map.put(getEntityRedisNamespace(e.getClass()) + e.getId(), e));
         getRedisUtils().getRedisTemplate().opsForValue().multiSet(map);
-        getRedisUtils().del(getEntityRedisNamespace(list.get(0).getClass()) + "Method:*");
+        getRedisUtils().delBatch(getEntityRedisNamespace(list.get(0).getClass()) + "Method:*");
         return list;
     }
 
@@ -238,13 +238,13 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         List<String> keys = new ArrayList<>();
         iterable.forEach(t -> keys.add(getEntityRedisKey(t.getId())));
         getRedisUtils().del(keys);
-        getRedisUtils().del(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Override
     default void deleteAllInBatch() {
         getJpaRepository().deleteAllInBatch();
-        getRedisUtils().del(getEntityRedisKeyPattern());
+        getRedisUtils().delBatch(getEntityRedisKeyPattern());
     }
 
     @Nonnull
@@ -286,7 +286,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     default <S extends E> S save(@Nonnull S entity) {
         entity = getJpaRepository().save(entity);
         getRedisUtils().set(getEntityRedisNamespace(entity.getClass()) + entity.getId(), entity);
-        getRedisUtils().del(getEntityRedisNamespace(entity.getClass()) + "Method:*");
+        getRedisUtils().delBatch(getEntityRedisNamespace(entity.getClass()) + "Method:*");
         return entity;
     }
 
