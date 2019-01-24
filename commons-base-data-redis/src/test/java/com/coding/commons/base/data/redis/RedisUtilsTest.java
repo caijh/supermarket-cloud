@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -69,6 +70,12 @@ public class RedisUtilsTest {
 
         redisUtils.set("test", "test", 0L);
         redisUtils.del("test");
+
+        redisUtils.set("u:1", 1);
+        redisUtils.set("u:2", 2);
+        redisUtils.delBatch("u:*");
+        Set<String> keys = redisUtils.getRedisTemplate().keys("u:*");
+        Assert.assertTrue(keys == null || keys.isEmpty());
     }
 
 }

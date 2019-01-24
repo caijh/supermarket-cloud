@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -106,6 +107,11 @@ public class RedisUtils {
 
     public void del(String key) {
         getRedisTemplate().delete(key);
+    }
+
+    public void delBatch(String pattern) {
+        Set<String> keys = getRedisTemplate().keys(pattern);
+        del(keys);
     }
 
     public void del(Collection<String> keys) {
