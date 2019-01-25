@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.coding.commons.base.PersistentObject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class Area implements PersistentObject<String> {
 
     private Long countryId;
 
+    @JsonIgnore
     @Override
     public String getId() {
         return code;
