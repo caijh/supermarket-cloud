@@ -92,14 +92,15 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     @Nonnull
     @Override
     default <S extends E> List<S> findAll(@Nonnull Example<S> example) {
-        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:" + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8);
-        List<S> list = getRedisUtils().getList(key, example.getProbeType());
+        Class<S> probeType = example.getProbeType();
+        String key = getEntityRedisNamespace(probeType) + "Method:findAll:" + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8);
+        List<S> list = getRedisUtils().getList(key, probeType);
         if (list != null) {
             return list;
         }
 
         List<S> entities = getJpaRepository().findAll(example);
-        getRedisUtils().setList(key, entities, example.getProbeType());
+        getRedisUtils().setList(key, entities, probeType);
         mappingEntityUsedInKey(entities, key);
         return entities;
     }
@@ -107,16 +108,17 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     @Nonnull
     @Override
     default <S extends E> List<S> findAll(@Nonnull Example<S> example, @Nonnull Sort sort) {
+        Class<S> probeType = example.getProbeType();
         String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:"
             + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8)
             + new String(ProtoStuffSerializerUtils.serialize(sort), StandardCharsets.UTF_8);
-        List<S> list = getRedisUtils().getList(key, example.getProbeType());
+        List<S> list = getRedisUtils().getList(key, probeType);
         if (list != null) {
             return list;
         }
 
         List<S> entities = getJpaRepository().findAll(example, sort);
-        getRedisUtils().setList(key, entities, example.getProbeType());
+        getRedisUtils().setList(key, entities, probeType);
         mappingEntityUsedInKey(entities, key);
         return entities;
     }
@@ -125,7 +127,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     @Nonnull
     @Override
     default <S extends E> Page<S> findAll(@Nonnull Example<S> example, @Nonnull Pageable pageable) {
-        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:"
+        String key = getEntityRedisNamespace(example.getProbeType()) + "Method:findAll:"
             + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8)
             + new String(ProtoStuffSerializerUtils.serialize(pageable), StandardCharsets.UTF_8);
         Page cachePage = getRedisUtils().get(key, Page.class);
