@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 public class RedisUtilsTest {
 
@@ -24,6 +25,7 @@ public class RedisUtilsTest {
         LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory("127.0.0.1", 6379);
         connectionFactory.afterPropertiesSet();
         redisTemplate.setConnectionFactory(connectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setEnableTransactionSupport(true);
         redisTemplate.afterPropertiesSet();
         redisUtils = new RedisUtils(redisTemplate);
@@ -73,8 +75,8 @@ public class RedisUtilsTest {
 
         redisUtils.set("u:1", 1);
         redisUtils.set("u:2", 2);
-        redisUtils.delBatch("u:*");
-        Set<String> keys = redisUtils.getRedisTemplate().keys("u:*");
+        redisUtils.delBatch("*");
+        Set<String> keys = redisUtils.getRedisTemplate().keys("*");
         Assert.assertTrue(keys == null || keys.isEmpty());
     }
 
