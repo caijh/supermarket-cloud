@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.persistence.EntityNotFoundException;
 
@@ -14,12 +16,15 @@ import com.coding.commons.base.PersistentObject;
 import com.coding.commons.base.data.redis.ProtoStuffSerializerUtils;
 import com.coding.commons.base.data.redis.RedisUtils;
 import com.coding.commons.base.data.redis.Wrapper;
+import com.coding.commons.util.DateUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+
+import static java.util.stream.Collectors.toSet;
 
 @NoRepositoryBean
 public interface CacheRepository<E extends PersistentObject<I>, I extends Serializable> extends
@@ -35,12 +40,12 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         return clazz.getSimpleName() + ":";
     }
 
-    default String getEntityRedisKey(I id) {
-        return getEntityRedisNamespace(getEntityClass()) + id;
-    }
-
     default String getEntityRedisKeyPattern() {
         return getEntityRedisNamespace(getEntityClass()) + "*";
+    }
+
+    default String getEntityRedisKey(I id) {
+        return getEntityRedisNamespace(getEntityClass()) + id;
     }
 
     @Nonnull
@@ -80,6 +85,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
 
         Page<E> page = getJpaRepository().findAll(pageable);
         getRedisUtils().set(key, page, 30L);
+        mappingEntityUsedInKey(page.getContent(), key);
         return page;
     }
 
@@ -91,8 +97,10 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         if (list != null) {
             return list;
         }
+
         List<S> entities = getJpaRepository().findAll(example);
         getRedisUtils().setList(key, entities, example.getProbeType());
+        mappingEntityUsedInKey(entities, key);
         return entities;
     }
 
@@ -106,8 +114,10 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         if (list != null) {
             return list;
         }
+
         List<S> entities = getJpaRepository().findAll(example, sort);
         getRedisUtils().setList(key, entities, example.getProbeType());
+        mappingEntityUsedInKey(entities, key);
         return entities;
     }
 
@@ -125,6 +135,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
 
         Page<S> page = getJpaRepository().findAll(example, pageable);
         getRedisUtils().set(key, page, 30L);
+        mappingEntityUsedInKey(page.getContent(), key);
         return page;
     }
 
@@ -136,7 +147,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
             return cacheCount;
         }
         long count = getJpaRepository().count();
-        getRedisUtils().set(key, count, 5L);
+        getRedisUtils().set(key, count, 15L);
         return count;
     }
 
@@ -148,7 +159,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
             return cacheCount;
         }
         long count = getJpaRepository().count(example);
-        getRedisUtils().set(key, count, 5L);
+        getRedisUtils().set(key, count, 15L);
         return count;
     }
 
@@ -163,23 +174,45 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     default void delete(@Nonnull E entity) {
         getJpaRepository().delete(entity);
         getRedisUtils().del(getEntityRedisKey(entity.getId()));
-        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        unMappingEntityUsedInKey(entity);
+    }
+
+    @Override
+    default void deleteInBatch(@Nonnull Iterable<E> iterable) {
+        getJpaRepository().deleteInBatch(iterable);
+        List<String> keys = new ArrayList<>();
+        List<E> entities = new ArrayList<>();
+        iterable.forEach(e -> {
+            keys.add(getEntityRedisKey(e.getId()));
+            entities.add(e);
+        });
+        getRedisUtils().del(keys);
+        unMappingEntityUsedInKey(entities);
+    }
+
+    @Override
+    default void deleteAllInBatch() {
+        getJpaRepository().deleteAllInBatch();
+        getRedisUtils().delBatch(getEntityRedisKeyPattern());
     }
 
     @Override
     default void deleteAll(@Nonnull Iterable<? extends E> iterable) {
         getJpaRepository().deleteAll(iterable);
         List<String> keys = new ArrayList<>();
-        iterable.forEach(t -> keys.add(getEntityRedisNamespace(getEntityClass()) + t));
+        List<E> entities = new ArrayList<>();
+        iterable.forEach(e -> {
+            keys.add(getEntityRedisNamespace(getEntityClass()) + e);
+            entities.add(e);
+        });
         getRedisUtils().del(keys);
-        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        unMappingEntityUsedInKey(entities);
     }
 
     @Override
     default void deleteAll() {
         getJpaRepository().deleteAll();
         getRedisUtils().delBatch(getEntityRedisKeyPattern());
-        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
     }
 
     @Nonnull
@@ -189,7 +222,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         Map<String, S> map = new HashMap<>();
         list.forEach(e -> map.put(getEntityRedisNamespace(e.getClass()) + e.getId(), e));
         getRedisUtils().getRedisTemplate().opsForValue().multiSet(map);
-        getRedisUtils().delBatch(getEntityRedisNamespace(list.get(0).getClass()) + "Method:*");
+        unMappingEntityUsedInKey(list);
         return list;
     }
 
@@ -232,21 +265,6 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         return getJpaRepository().saveAndFlush(s);
     }
 
-    @Override
-    default void deleteInBatch(@Nonnull Iterable<E> iterable) {
-        getJpaRepository().deleteInBatch(iterable);
-        List<String> keys = new ArrayList<>();
-        iterable.forEach(t -> keys.add(getEntityRedisKey(t.getId())));
-        getRedisUtils().del(keys);
-        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
-    }
-
-    @Override
-    default void deleteAllInBatch() {
-        getJpaRepository().deleteAllInBatch();
-        getRedisUtils().delBatch(getEntityRedisKeyPattern());
-    }
-
     @Nonnull
     @Override
     default Optional<E> findById(@Nonnull I id) {
@@ -286,8 +304,48 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     default <S extends E> S save(@Nonnull S entity) {
         entity = getJpaRepository().save(entity);
         getRedisUtils().set(getEntityRedisNamespace(entity.getClass()) + entity.getId(), entity);
-        getRedisUtils().delBatch(getEntityRedisNamespace(entity.getClass()) + "Method:*");
+        unMappingEntityUsedInKey(entity);
         return entity;
+    }
+
+    default <S extends E> void mappingEntityUsedInKey(List<S> list, String refByKey) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        Class<? extends PersistentObject> clazz = list.get(0).getClass();
+        String prefixKey = getEntityRedisNamespace(clazz) + "EntityRefInKey:";
+        list.forEach(e -> {
+            String key = prefixKey + e.getId();
+            getRedisUtils().getRedisTemplate().expire(key, 30, TimeUnit.DAYS);
+            getRedisUtils().getRedisTemplate().opsForZSet()
+                           .add(key, refByKey, DateUtils.getCurrentUnixTimestamp());
+        });
+    }
+
+    default <S extends E> void unMappingEntityUsedInKey(S entity) {
+        if (entity == null) {
+            return;
+        }
+
+        String key = getEntityRedisNamespace(entity.getClass()) + "EntityRefInKey:" + entity.getId();
+        final double PAGE_LIST_CACHE_SECONDS = 30d;
+        getRedisUtils().getRedisTemplate().opsForZSet()
+                       .removeRangeByScore(key, 0, DateUtils.getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS);
+        Set<Object> keys = getRedisUtils().getRedisTemplate().opsForZSet()
+                                          .rangeByScore(key, DateUtils
+                                              .getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS, DateUtils
+                                              .getCurrentUnixTimestamp());
+
+        if (keys != null) {
+            getRedisUtils().del(keys.parallelStream().map(Object::toString).collect(toSet()));
+        }
+    }
+
+    default <S extends E> void unMappingEntityUsedInKey(List<S> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return;
+        }
+        entities.forEach(this::unMappingEntityUsedInKey);
     }
 
 }
