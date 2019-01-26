@@ -19,7 +19,7 @@ public class UrlRoleCache implements InitializingBean {
     private Map<String, Set<String>> urlRoleCodeSetMap;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         urlRoleCodeSetMap = grantedAuthorityService.init();
     }
 

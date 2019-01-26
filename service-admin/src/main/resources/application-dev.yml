@@ -19,7 +19,7 @@ spring:
       hibernate.dialect: com.coding.commons.base.data.jpa.CustomPostgreSQLDialect
   jta:
     enabled: true
-    transaction-manager-id:
+    transaction-manager-id: service-admin
     atomikos:
       properties:
         service: com.atomikos.icatch.standalone.UserTransactionServiceFactory
