@@ -78,13 +78,13 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     @Override
     default Page<E> findAll(@Nonnull Pageable pageable) {
         String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAll:" + new String(ProtoStuffSerializerUtils.serialize(pageable), StandardCharsets.UTF_8);
-        Page<E> cachePage = getRedisUtils().get(key, Page.class);
-        if (cachePage != null) {
-            return cachePage;
+        PageInfo<E> cache = getRedisUtils().get(key, PageInfo.class);
+        if (cache != null) {
+            return cache.toPage(pageable);
         }
 
         Page<E> page = getJpaRepository().findAll(pageable);
-        getRedisUtils().set(key, page, 30L);
+        getRedisUtils().set(key, PageInfo.fromPage(page), 30L);
         mappingEntityUsedInKey(page.getContent(), key);
         return page;
     }
@@ -130,13 +130,13 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         String key = getEntityRedisNamespace(example.getProbeType()) + "Method:findAll:"
             + new String(ProtoStuffSerializerUtils.serialize(example), StandardCharsets.UTF_8)
             + new String(ProtoStuffSerializerUtils.serialize(pageable), StandardCharsets.UTF_8);
-        Page cachePage = getRedisUtils().get(key, Page.class);
-        if (cachePage != null) {
-            return cachePage;
+        PageInfo<S> cache = getRedisUtils().get(key, PageInfo.class);
+        if (cache != null) {
+            return cache.toPage(pageable);
         }
 
         Page<S> page = getJpaRepository().findAll(example, pageable);
-        getRedisUtils().set(key, page, 30L);
+        getRedisUtils().set(key, PageInfo.fromPage(page), 30L);
         mappingEntityUsedInKey(page.getContent(), key);
         return page;
     }
