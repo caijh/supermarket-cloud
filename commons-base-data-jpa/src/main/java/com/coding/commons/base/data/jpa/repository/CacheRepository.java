@@ -51,7 +51,8 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     @Nonnull
     @Override
     default List<E> findAllById(@Nonnull Iterable<I> ids) {
-        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAllById:" + new String(ProtoStuffSerializerUtils.serialize(new Wrapper<>(ids)), StandardCharsets.UTF_8);
+        String key = getEntityRedisNamespace(getEntityClass()) + "Method:findAllById:"
+            + new String(ProtoStuffSerializerUtils.serialize(new Wrapper<>(ids)), StandardCharsets.UTF_8);
         List<E> list = getRedisUtils().getList(key, getEntityClass());
         if (list != null) {
             return list;
@@ -315,13 +316,22 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
             return;
         }
         Class<? extends PersistentObject> clazz = list.get(0).getClass();
-        String prefixKey = getEntityRedisNamespace(clazz) + "EntityRefInKey:";
-        list.forEach(e -> {
-            String key = prefixKey + e.getId();
-            getRedisUtils().getRedisTemplate().expire(key, 30, TimeUnit.DAYS);
-            getRedisUtils().getRedisTemplate().opsForZSet()
-                           .add(key, refByKey, DateUtils.getCurrentUnixTimestamp());
-        });
+        String entityRedisNamespace = getEntityRedisNamespace(clazz);
+        String prefixKey = entityRedisNamespace + "EntityRefInKey:";
+        list.stream().map(e -> new Action() {
+            @Override
+            public String group() {
+                return entityRedisNamespace;
+            }
+
+            @Override
+            public void exec() {
+                String key = prefixKey + e.getId();
+                getRedisUtils().getRedisTemplate().expire(key, 30, TimeUnit.DAYS);
+                getRedisUtils().getRedisTemplate().opsForZSet()
+                               .add(key, refByKey, DateUtils.getCurrentUnixTimestamp());
+            }
+        }).forEachOrdered(Broker::add);
     }
 
     default <S extends E> void unMappingEntityUsedInKey(S entity) {
@@ -329,18 +339,29 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
             return;
         }
 
-        String key = getEntityRedisNamespace(entity.getClass()) + "EntityRefInKey:" + entity.getId();
-        final double PAGE_LIST_CACHE_SECONDS = 30d;
-        getRedisUtils().getRedisTemplate().opsForZSet()
-                       .removeRangeByScore(key, 0, DateUtils.getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS);
-        Set<Object> keys = getRedisUtils().getRedisTemplate().opsForZSet()
-                                          .rangeByScore(key, DateUtils
-                                              .getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS, DateUtils
-                                              .getCurrentUnixTimestamp());
+        String entityRedisNamespace = getEntityRedisNamespace(entity.getClass());
+        Broker.add(new Action() {
+            @Override
+            public String group() {
+                return entityRedisNamespace;
+            }
 
-        if (keys != null) {
-            getRedisUtils().del(keys.parallelStream().map(Object::toString).collect(toSet()));
-        }
+            @Override
+            public void exec() {
+                String key = entityRedisNamespace + "EntityRefInKey:" + entity.getId();
+                final double PAGE_LIST_CACHE_SECONDS = 30d;
+                getRedisUtils().getRedisTemplate().opsForZSet()
+                               .removeRangeByScore(key, 0, DateUtils.getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS);
+                Set<Object> keys = getRedisUtils().getRedisTemplate().opsForZSet()
+                                                  .rangeByScore(key, DateUtils
+                                                      .getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS, DateUtils
+                                                      .getCurrentUnixTimestamp());
+
+                if (keys != null) {
+                    getRedisUtils().del(keys.parallelStream().map(Object::toString).collect(toSet()));
+                }
+            }
+        });
     }
 
     default <S extends E> void unMappingEntityUsedInKey(List<S> entities) {
