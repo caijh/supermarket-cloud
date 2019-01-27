@@ -318,9 +318,9 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         Class<? extends PersistentObject> clazz = list.get(0).getClass();
         String entityRedisNamespace = getEntityRedisNamespace(clazz);
         String prefixKey = entityRedisNamespace + "EntityRefInKey:";
-        list.stream().map(e -> new Action() {
+        list.stream().map(e -> new ActionMessage() {
             @Override
-            public String group() {
+            public String topic() {
                 return entityRedisNamespace;
             }
 
@@ -331,7 +331,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
                 getRedisUtils().getRedisTemplate().opsForZSet()
                                .add(key, refByKey, DateUtils.getCurrentUnixTimestamp());
             }
-        }).forEachOrdered(Broker::add);
+        }).forEachOrdered(Broker::accept);
     }
 
     default <S extends E> void unMappingEntityUsedInKey(S entity) {
@@ -340,9 +340,9 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         }
 
         String entityRedisNamespace = getEntityRedisNamespace(entity.getClass());
-        Broker.add(new Action() {
+        Broker.accept(new ActionMessage() {
             @Override
-            public String group() {
+            public String topic() {
                 return entityRedisNamespace;
             }
 

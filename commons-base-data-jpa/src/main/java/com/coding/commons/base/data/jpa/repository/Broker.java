@@ -11,7 +11,7 @@ public class Broker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Broker.class);
 
-    private static final LinkedBlockingQueue<Action> QUEUE = new LinkedBlockingQueue<>(10000);
+    private static final LinkedBlockingQueue<Message> QUEUE = new LinkedBlockingQueue<>(10000);
 
     private static final Dispatch DISPATCH = new Dispatch();
 
@@ -19,30 +19,30 @@ public class Broker {
         DISPATCH.start();
     }
 
-    public static void add(Action action) {
+    public static void accept(ActionMessage actionMessage) {
         try {
-            QUEUE.put(action);
+            QUEUE.put(actionMessage);
         } catch (Exception e) {
-            LOGGER.error("queue add fail", e);
+            LOGGER.error("queue accept fail", e);
         }
     }
 
     private static class Dispatch extends Thread {
 
-        private Map<String, LinkedBlockingQueue<Action>> queueMap = new HashMap<>();
+        private Map<String, LinkedBlockingQueue<Message>> topicMap = new HashMap<>();
 
         @Override
         public void run() {
             while (true) {
                 try {
-                    Action action = QUEUE.take();
-                    if (!queueMap.containsKey(action.group())) {
-                        LinkedBlockingQueue<Action> queue = new LinkedBlockingQueue<>();
-                        queueMap.put(action.group(), queue);
+                    Message actionMessage = QUEUE.take();
+                    if (!topicMap.containsKey(actionMessage.topic())) {
+                        LinkedBlockingQueue<Message> queue = new LinkedBlockingQueue<>();
+                        topicMap.put(actionMessage.topic(), queue);
                         Consumer consumer = new Consumer(queue);
                         consumer.start();
                     } else {
-                        queueMap.get(action.group()).put(action);
+                        topicMap.get(actionMessage.topic()).put(actionMessage);
                     }
                 } catch (Exception e) {
                     LOGGER.error("Dispatch run fail", e);

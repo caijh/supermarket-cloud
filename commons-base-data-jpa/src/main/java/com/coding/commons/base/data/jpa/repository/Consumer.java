@@ -9,9 +9,9 @@ public class Consumer extends Thread {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private LinkedBlockingQueue<Action> queue;
+    private LinkedBlockingQueue<Message> queue;
 
-    public Consumer(LinkedBlockingQueue<Action> queue) {
+    public Consumer(LinkedBlockingQueue<Message> queue) {
         this.queue = queue;
     }
 
@@ -19,8 +19,10 @@ public class Consumer extends Thread {
     public void run() {
         while (true) {
             try {
-                Action action = queue.take();
-                action.exec();
+                Message message = queue.take();
+                if (message instanceof ActionMessage) {
+                    ((ActionMessage) message).exec();
+                }
             } catch (Exception e) {
                 logger.error("consumer fail", e);
             }
