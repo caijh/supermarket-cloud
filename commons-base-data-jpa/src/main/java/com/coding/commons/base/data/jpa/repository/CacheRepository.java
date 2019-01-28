@@ -59,6 +59,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         }
         List<E> entities = getJpaRepository().findAllById(ids);
         getRedisUtils().setList(key, entities, getEntityClass());
+        mappingEntityUsedInKey(entities, key);
         return entities;
     }
 
@@ -170,7 +171,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
     default void deleteById(@Nonnull I id) {
         getJpaRepository().deleteById(id);
         getRedisUtils().del(getEntityRedisKey(id));
-        getRedisUtils().delBatch(getEntityRedisNamespace(getEntityClass()) + "Method:*");
+        unMappingEntityUsedInKey(id);
     }
 
     @Override
@@ -205,7 +206,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         List<String> keys = new ArrayList<>();
         List<E> entities = new ArrayList<>();
         iterable.forEach(e -> {
-            keys.add(getEntityRedisNamespace(getEntityClass()) + e);
+            keys.add(getEntityRedisNamespace(getEntityClass()) + e.getId());
             entities.add(e);
         });
         getRedisUtils().del(keys);
@@ -320,7 +321,7 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         String prefixKey = entityRedisNamespace + "EntityRefInKey:";
         list.stream().map(e -> new ActionMessage() {
             @Override
-            public String topic() {
+            public String group() {
                 return entityRedisNamespace;
             }
 
@@ -342,24 +343,47 @@ public interface CacheRepository<E extends PersistentObject<I>, I extends Serial
         String entityRedisNamespace = getEntityRedisNamespace(entity.getClass());
         Broker.accept(new ActionMessage() {
             @Override
-            public String topic() {
+            public String group() {
                 return entityRedisNamespace;
             }
 
             @Override
             public void exec() {
-                String key = entityRedisNamespace + "EntityRefInKey:" + entity.getId();
-                final double PAGE_LIST_CACHE_SECONDS = 30d;
-                getRedisUtils().getRedisTemplate().opsForZSet()
-                               .removeRangeByScore(key, 0, DateUtils.getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS);
-                Set<Object> keys = getRedisUtils().getRedisTemplate().opsForZSet()
-                                                  .rangeByScore(key, DateUtils
-                                                      .getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS, DateUtils
-                                                      .getCurrentUnixTimestamp());
+                delKeysRefEntity(entityRedisNamespace, entity.getId());
+            }
+        });
+    }
 
-                if (keys != null) {
-                    getRedisUtils().del(keys.parallelStream().map(Object::toString).collect(toSet()));
-                }
+    default void delKeysRefEntity(String entityRedisNamespace, Serializable id) {
+        String key = entityRedisNamespace + "EntityRefInKey:" + id;
+        final double PAGE_LIST_CACHE_SECONDS = 30d;
+        getRedisUtils().getRedisTemplate().opsForZSet()
+                       .removeRangeByScore(key, 0, DateUtils.getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS);
+        Set<Object> keys = getRedisUtils().getRedisTemplate().opsForZSet()
+                                          .rangeByScore(key, DateUtils
+                                              .getCurrentUnixTimestamp() - PAGE_LIST_CACHE_SECONDS, DateUtils
+                                              .getCurrentUnixTimestamp());
+
+        if (keys != null) {
+            getRedisUtils().del(keys.parallelStream().map(Object::toString).collect(toSet()));
+        }
+    }
+
+    default void unMappingEntityUsedInKey(Serializable id) {
+        if (id == null) {
+            return;
+        }
+
+        String entityRedisNamespace = getEntityRedisNamespace(getEntityClass());
+        Broker.accept(new ActionMessage() {
+            @Override
+            public String group() {
+                return entityRedisNamespace;
+            }
+
+            @Override
+            public void exec() {
+                delKeysRefEntity(entityRedisNamespace, id);
             }
         });
     }

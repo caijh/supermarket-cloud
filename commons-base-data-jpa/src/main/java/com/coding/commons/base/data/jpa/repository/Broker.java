@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Broker {
+class Broker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Broker.class);
 
@@ -19,7 +19,10 @@ public class Broker {
         DISPATCH.start();
     }
 
-    public static void accept(ActionMessage actionMessage) {
+    private Broker() {
+    }
+
+    static void accept(ActionMessage actionMessage) {
         try {
             QUEUE.put(actionMessage);
         } catch (Exception e) {
@@ -29,27 +32,26 @@ public class Broker {
 
     private static class Dispatch extends Thread {
 
-        private Map<String, LinkedBlockingQueue<Message>> topicMap = new HashMap<>();
+        private Map<String, LinkedBlockingQueue<Message>> groupMap = new HashMap<>();
 
         @Override
         public void run() {
             while (true) {
                 try {
-                    Message actionMessage = QUEUE.take();
-                    if (!topicMap.containsKey(actionMessage.topic())) {
+                    Message message = QUEUE.take();
+                    if (!groupMap.containsKey(message.group())) {
                         LinkedBlockingQueue<Message> queue = new LinkedBlockingQueue<>();
-                        topicMap.put(actionMessage.topic(), queue);
+                        groupMap.put(message.group(), queue);
                         Consumer consumer = new Consumer(queue);
                         consumer.start();
                     } else {
-                        topicMap.get(actionMessage.topic()).put(actionMessage);
+                        groupMap.get(message.group()).put(message);
                     }
                 } catch (Exception e) {
                     LOGGER.error("Dispatch run fail", e);
                 }
             }
         }
-
     }
 
 }
