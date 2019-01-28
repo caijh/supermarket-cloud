@@ -1,4 +1,4 @@
-package com.coding.supermarket.domain.product.model;
+package com.coding.supermarket.domain.order.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * 购物车.
+ */
 @Builder
 @Getter
 @Setter
