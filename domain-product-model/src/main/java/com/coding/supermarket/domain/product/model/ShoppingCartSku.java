@@ -1,9 +1,10 @@
 package com.coding.supermarket.domain.product.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCartSku extends JpaBaseEntity<Long> {
+
     public static final int MAX_NUM = 100;
 
     private Long userId;
@@ -25,6 +27,12 @@ public class ShoppingCartSku extends JpaBaseEntity<Long> {
 
     private Integer num;
 
+    /**
+     * 加入购物车时的价格.
+     */
+    private BigDecimal price;
+
     private Date createTime;
     private Date updateTime;
+
 }
