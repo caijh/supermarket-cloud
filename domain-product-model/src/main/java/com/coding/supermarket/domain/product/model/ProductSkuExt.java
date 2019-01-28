@@ -1,9 +1,9 @@
 package com.coding.supermarket.domain.product.model;
 
+import com.coding.commons.base.PersistentObject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import com.coding.commons.base.PersistentObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +30,7 @@ public class ProductSkuExt implements PersistentObject<Long> {
      */
     private Integer soldNum;
 
+    @JsonIgnore
     @Override
     public Long getId() {
         return this.productSkuId;

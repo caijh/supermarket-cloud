@@ -1,9 +1,10 @@
 package com.coding.supermarket.domain.product.model;
 
+import java.io.Serializable;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -11,9 +12,6 @@ public class ProductAttr implements Serializable {
 
     private String name;
 
-    /**
-     * 逗号分割.
-     */
-    private String value;
+    private List<String> value;
 
 }

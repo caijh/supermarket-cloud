@@ -1,5 +1,6 @@
 package com.coding.supermarket.domain.product.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -42,14 +43,14 @@ public class ProductSku extends JpaBaseEntity<Long> {
     private String thumbnail;
 
     /**
-     * 价格,单位分.
+     * 价格,单位元.
      */
-    private Integer price;
+    private BigDecimal price;
 
     /**
-     * 参考价, 单位分.
+     * 参考价, 单位元.
      */
-    private Integer referPrice;
+    private BigDecimal referPrice;
 
     /**
      * sku商品状态.

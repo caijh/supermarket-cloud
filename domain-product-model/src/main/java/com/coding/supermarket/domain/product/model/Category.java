@@ -1,9 +1,9 @@
 package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
-import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +32,12 @@ public class Category extends JpaBaseEntity<Long> {
      * 上一级分类.
      */
     private Long parentId;
+
+    /**
+     * 从第一级分类到这个分类路径, 分类1_分类2_分类3.
+     */
+
+    private String path;
 
     private Long createdBy;
 
