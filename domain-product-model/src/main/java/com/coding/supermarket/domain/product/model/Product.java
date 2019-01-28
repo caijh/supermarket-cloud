@@ -2,11 +2,12 @@ package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
 import java.util.List;
+
+import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import com.coding.supermarket.domain.product.enums.ProductStatusEnum;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-
-import com.coding.commons.base.data.jpa.JpaBaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -86,7 +87,7 @@ public class Product extends JpaBaseEntity<Long> {
     /**
      * 商品状态.
      *
-     * @see ProductStatus
+     * @see ProductStatusEnum
      */
     private Integer status;
 

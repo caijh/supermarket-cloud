@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import com.coding.supermarket.domain.product.enums.ProductStatusEnum;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,7 +56,7 @@ public class ProductSku extends JpaBaseEntity<Long> {
     /**
      * sku商品状态.
      *
-     * @see ProductStatus
+     * @see ProductStatusEnum
      */
     private Integer status;
 
