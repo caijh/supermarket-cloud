@@ -2,10 +2,11 @@ package com.coding.commons.domain.user.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 import com.coding.commons.base.PersistentObject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,7 @@ public class UserExt implements PersistentObject<Long> {
 
     private Date updateTime;
 
+    @JsonIgnore
     @Override
     public Long getId() {
         return userId;
