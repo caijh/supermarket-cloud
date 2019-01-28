@@ -18,10 +18,19 @@ public class UserExt implements PersistentObject<Long> {
     @Id
     private Long userId;
 
+    /**
+     * 级别.
+     */
     private Integer grade;
 
+    /**
+     * 积分.
+     */
     private Integer point;
 
+    /**
+     * 余额.
+     */
     private BigDecimal balance;
 
     private Long createdBy;
