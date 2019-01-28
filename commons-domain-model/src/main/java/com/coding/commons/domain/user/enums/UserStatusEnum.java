@@ -1,4 +1,4 @@
-package com.coding.commons.domain.user.model;
+package com.coding.commons.domain.user.enums;
 
 import com.coding.commons.base.IndexEnum;
 

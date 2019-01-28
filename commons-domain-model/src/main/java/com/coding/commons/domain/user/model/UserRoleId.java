@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRoleId implements Serializable {
+
     private Long userId;
 
     private Long roleId;
+
 }

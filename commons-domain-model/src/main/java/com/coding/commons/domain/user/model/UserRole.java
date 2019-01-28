@@ -35,4 +35,5 @@ public class UserRole implements PersistentObject<UserRoleId> {
         }
         return userRoleId;
     }
+
 }

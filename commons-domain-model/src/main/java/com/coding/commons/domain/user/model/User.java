@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
 import com.coding.commons.domain.role.model.Role;
+import com.coding.commons.domain.user.enums.UserStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,11 @@ import lombok.Setter;
 @Setter
 @Entity
 public class User extends JpaBaseEntity<Long> implements Serializable {
+
+    /**
+     * 账号.
+     * 如果是后台账号要以@xxx等结尾
+     */
     @Column(unique = true)
     private String account;
 
@@ -26,9 +32,15 @@ public class User extends JpaBaseEntity<Long> implements Serializable {
 
     private String realName;
 
+    private String phone;
+
+    private String email;
+
     private String headImg;
 
     private Date birthday;
+
+    private Byte gender;
 
     private Long createdBy;
 
@@ -48,4 +60,5 @@ public class User extends JpaBaseEntity<Long> implements Serializable {
     @JsonIgnore
     @Transient
     private List<Role> roles;
+
 }
