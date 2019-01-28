@@ -1,8 +1,8 @@
-package com.coding.supermarket.domain.order.model;
+package com.coding.supermarket.domain.order.enums;
 
 import com.coding.commons.base.IndexEnum;
 
-public enum OrderStatus implements IndexEnum {
+public enum OrderStatusEnum implements IndexEnum {
     UN_PAY(0),
     UN_SEND(1),
     UN_RECEIVE(2),
@@ -11,7 +11,7 @@ public enum OrderStatus implements IndexEnum {
 
     private int index;
 
-    OrderStatus(int index) {
+    OrderStatusEnum(int index) {
         this.index = index;
     }
 
