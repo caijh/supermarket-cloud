@@ -1,8 +1,8 @@
-package com.coding.supermarket.domain.coupon.model;
+package com.coding.supermarket.domain.coupon.enums;
 
 import com.coding.commons.base.IndexEnum;
 
-public enum CouponUseTimeType implements IndexEnum {
+public enum CouponUseTimeTypeEnum implements IndexEnum {
     /**
      * 在开始与结束时间内使用.
      */
@@ -15,7 +15,7 @@ public enum CouponUseTimeType implements IndexEnum {
 
     private Integer index;
 
-    CouponUseTimeType(Integer index) {
+    CouponUseTimeTypeEnum(Integer index) {
         this.index = index;
     }
 

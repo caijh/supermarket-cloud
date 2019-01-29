@@ -1,8 +1,8 @@
-package com.coding.supermarket.domain.coupon.model;
+package com.coding.supermarket.domain.coupon.enums;
 
 import com.coding.commons.base.IndexEnum;
 
-public enum CouponUserObtainType implements IndexEnum {
+public enum CouponUserObtainTypeEnum implements IndexEnum {
     /**
      * 用户领取.
      */
@@ -18,7 +18,7 @@ public enum CouponUserObtainType implements IndexEnum {
 
     private Integer index;
 
-    CouponUserObtainType(int index) {
+    CouponUserObtainTypeEnum(int index) {
         this.index = index;
     }
 

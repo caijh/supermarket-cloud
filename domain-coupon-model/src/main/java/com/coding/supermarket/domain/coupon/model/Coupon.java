@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import com.coding.supermarket.domain.coupon.enums.CouponUseTimeTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -30,7 +31,7 @@ public class Coupon extends JpaBaseEntity<Long> {
     /**
      * 优惠券使用的时间类型.
      *
-     * @see CouponUseTimeType
+     * @see CouponUseTimeTypeEnum
      */
     private Integer useTimeType;
     private Date startTime;

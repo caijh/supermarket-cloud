@@ -4,6 +4,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import com.coding.supermarket.domain.coupon.enums.CouponUserObtainTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ public class CouponEntry extends JpaBaseEntity<Long> {
     /**
      * 优惠获取方式.
      *
-     * @see CouponUserObtainType
+     * @see CouponUserObtainTypeEnum
      */
     private Integer userObtainType;
 

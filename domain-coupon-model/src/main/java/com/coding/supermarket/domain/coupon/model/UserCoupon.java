@@ -4,6 +4,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
+import com.coding.supermarket.domain.coupon.enums.UserCouponStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,7 @@ public class UserCoupon extends JpaBaseEntity<Long> {
     /**
      * 用户优惠券状态.
      *
-     * @see UserCouponStatus
+     * @see UserCouponStatusEnum
      */
     private Integer status;
 
