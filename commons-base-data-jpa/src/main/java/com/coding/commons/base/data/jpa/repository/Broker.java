@@ -2,6 +2,7 @@ package com.coding.commons.base.data.jpa.repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ class Broker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Broker.class);
 
-    private static final LinkedBlockingQueue<Message> QUEUE = new LinkedBlockingQueue<>(10000);
+    private static final BlockingQueue<Message> QUEUE = new LinkedBlockingQueue<>(10000);
 
     private static final Dispatch DISPATCH = new Dispatch();
 
@@ -32,24 +33,23 @@ class Broker {
 
     private static class Dispatch extends Thread {
 
-        private Map<String, LinkedBlockingQueue<Message>> groupMap = new HashMap<>();
+        private Map<String, BlockingQueue<Message>> groupMap = new HashMap<>();
 
         @Override
         public void run() {
-            while (true) {
-                try {
+            try {
+                while (true) {
                     Message message = QUEUE.take();
                     if (!groupMap.containsKey(message.group())) {
-                        LinkedBlockingQueue<Message> queue = new LinkedBlockingQueue<>();
+                        BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
                         groupMap.put(message.group(), queue);
-                        Consumer consumer = new Consumer(queue);
-                        consumer.start();
+                        new Consumer(queue).start();
                     } else {
                         groupMap.get(message.group()).put(message);
                     }
-                } catch (Exception e) {
-                    LOGGER.error("Dispatch run fail", e);
                 }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
     }

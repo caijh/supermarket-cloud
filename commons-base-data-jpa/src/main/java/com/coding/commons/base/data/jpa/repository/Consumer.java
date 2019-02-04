@@ -1,31 +1,26 @@
 package com.coding.commons.base.data.jpa.repository;
 
-import java.util.concurrent.LinkedBlockingQueue;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.concurrent.BlockingQueue;
 
 public class Consumer extends Thread {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private BlockingQueue<Message> queue;
 
-    private LinkedBlockingQueue<Message> queue;
-
-    public Consumer(LinkedBlockingQueue<Message> queue) {
+    public Consumer(BlockingQueue<Message> queue) {
         this.queue = queue;
     }
 
     @Override
     public void run() {
-        while (true) {
-            try {
+        try {
+            while (true) {
                 Message message = queue.take();
                 if (message instanceof ActionMessage) {
                     ((ActionMessage) message).exec();
                 }
-            } catch (Exception e) {
-                logger.error("consumer fail", e);
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
