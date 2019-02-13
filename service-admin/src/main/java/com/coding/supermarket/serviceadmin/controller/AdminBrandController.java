@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import com.coding.commons.base.BizException;
 import com.coding.commons.base.CommonStatus;
+import com.coding.commons.base.constant.Operate;
+import com.coding.commons.base.locale.LocaleMessageService;
 import com.coding.commons.util.BeanUtils;
 import com.coding.commons.util.DateUtils;
 import com.coding.supermarket.domain.product.model.Brand;
@@ -29,6 +31,9 @@ public class AdminBrandController {
     @Inject
     private BrandService brandService;
 
+    @Inject
+    private LocaleMessageService localeMessageService;
+
     /**
      * 品牌列表.
      */
@@ -51,7 +56,7 @@ public class AdminBrandController {
         Brand brand = new Brand();
         BeanUtils.copyProperties(reqBody, brand);
         brandService.add(brand);
-        return ResponseEntity.ok("新增成功");
+        return ResponseEntity.ok(localeMessageService.getMessage(Operate.ADD_SUCCESS));
     }
 
     /**
@@ -63,7 +68,7 @@ public class AdminBrandController {
         BeanUtils.copyProperties(reqBody, brand);
         brand.setUpdateTime(DateUtils.now());
         brandService.update(brand);
-        return ResponseEntity.ok("修改成功");
+        return ResponseEntity.ok(localeMessageService.getMessage(Operate.UPDATE_SUCCESS));
     }
 
     /**
@@ -72,7 +77,7 @@ public class AdminBrandController {
     @GetMapping(value = "/delete")
     public ResponseEntity<String> delete(@RequestParam String id) throws BizException {
         brandService.delete(id);
-        return ResponseEntity.ok("删除成功");
+        return ResponseEntity.ok(localeMessageService.getMessage(Operate.DEL_SUCCESS));
     }
 
 }

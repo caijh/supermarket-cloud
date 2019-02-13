@@ -38,10 +38,9 @@ public class LoggingAspect {
      * logger info before request.
      *
      * @param joinPoint JoinPoint
-     * @throws NoSuchMethodException if controller method not found.
      */
     @Before(value = "controller() && publicMethod()")
-    public void before(JoinPoint joinPoint) throws NoSuchMethodException {
+    public void before(JoinPoint joinPoint) {
         LOGGER.debug("Entering in Method: {}", joinPoint.getSignature().getName());
         LOGGER.debug("Class Name: {}", joinPoint.getSignature().getDeclaringTypeName());
         String reqBody = JSON.toJSONString(joinPoint.getArgs());
@@ -58,7 +57,8 @@ public class LoggingAspect {
     @AfterReturning(pointcut = "controller() && publicMethod()", returning = "result")
     public void afterReturning(JoinPoint joinPoint, Object result) {
         String respBody = JSON.toJSONString(result);
-        LOGGER.info("Method Return value : {}", respBody);
+        String methodName = joinPoint.getSignature().getName();
+        LOGGER.info("Method {} Return value : {}", methodName, respBody);
     }
 
     @AfterThrowing(pointcut = "controller() && publicMethod()", throwing = "exception")

@@ -9,12 +9,19 @@ spring:
       discovery:
         enabled: true
         service-id: config-server
+      fail-fast: true # 连不上config-server, 则立即启动失败, 也可以设为false, 并设置spring.cloud.config.retry.*来配置重连的次数等
+      request-read-timeout: 60000
   profiles:
     active: dev
+
+health:
+  config:
+    enabled: true
 
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
   instance:
-    instance-id: ${spring.application.name}-${server.port}
+    instance-id: ${spring.cloud.client.hostname}-${spring.application.name}-${server.port}
+
