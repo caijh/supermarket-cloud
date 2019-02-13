@@ -2,6 +2,8 @@ server:
   port: 8761
 
 eureka:
+  instance:
+    hostname: localhost
   server:
     eviction-interval-timer-in-ms: 60000
     wait-time-in-ms-when-sync-empty: 0
