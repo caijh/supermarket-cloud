@@ -3,7 +3,7 @@ spring:
     config:
       server:
         git:
-          uri: ${user.dir}/../supermarket-cloud-config-repo
+          uri: file://${user.dir}/../supermarket-cloud-config-repo
         monitor:
           github:
             enabled: true

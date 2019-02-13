@@ -4,6 +4,7 @@ spring:
       server:
         git:
           uri: https://github.com/caijh/spring-cloud-config-repo.git
+          default-label: master
         monitor:
           github:
             enabled: true
