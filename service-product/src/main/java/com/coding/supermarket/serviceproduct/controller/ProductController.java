@@ -3,12 +3,13 @@ package com.coding.supermarket.serviceproduct.controller;
 import java.util.List;
 import javax.inject.Inject;
 
-import com.coding.commons.base.BizException;
+import com.coding.commons.base.exception.BizException;
 import com.coding.commons.util.BeanUtils;
+import com.coding.supermarket.domain.product.enums.ProductStatusEnum;
 import com.coding.supermarket.domain.product.model.Product;
-import com.coding.supermarket.domain.product.model.ProductStatus;
 import com.coding.supermarket.domain.product.service.ProductService;
 import com.coding.supermarket.domain.product.vo.ProductSkuVo;
+import com.coding.supermarket.domain.product.vo.ProductVo;
 import com.coding.supermarket.serviceproduct.request.product.ProductListReqBody;
 import com.coding.supermarket.serviceproduct.request.product.ProductSkuListReqBody;
 import org.springframework.data.domain.Page;
@@ -34,11 +35,11 @@ public class ProductController {
     public Page<Product> list(@RequestBody ProductListReqBody reqBody) {
         Product product = new Product();
         BeanUtils.copyProperties(reqBody, product);
-        product.setStatus(ProductStatus.ON_SALE.getIndex());
+        product.setStatus(ProductStatusEnum.ON_SALE.getIndex());
         return productService.list(product, PageRequest.of(reqBody.getPageNo(), reqBody.getPageSize()));
     }
 
-    @PostMapping(value = "/findProductSku")
+    @PostMapping(value = "/sku/list")
     public List<ProductSkuVo> findProductSku(@RequestBody ProductSkuListReqBody reqBody) {
         return productService.findSkuList(reqBody.getProductSkuIds());
     }
@@ -47,8 +48,8 @@ public class ProductController {
      * 商品详情.
      */
     @GetMapping(value = "/detail")
-    public ResponseEntity<Product> detail(Long id) throws BizException {
-        Product product = productService.detail(id);
+    public ResponseEntity<ProductVo> detail(Long id) throws BizException {
+        ProductVo product = productService.findById(id);
         return ResponseEntity.ok(product);
     }
 

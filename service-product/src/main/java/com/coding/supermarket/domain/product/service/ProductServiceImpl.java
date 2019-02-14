@@ -8,7 +8,6 @@ import javax.inject.Named;
 import com.coding.commons.util.BeanUtils;
 import com.coding.supermarket.domain.product.model.Product;
 import com.coding.supermarket.domain.product.model.ProductSku;
-import com.coding.supermarket.domain.product.model.ProductSkuExt;
 import com.coding.supermarket.domain.product.repository.BrandCacheRepository;
 import com.coding.supermarket.domain.product.repository.CategoryCacheRepository;
 import com.coding.supermarket.domain.product.repository.ProductCacheRepository;
@@ -47,16 +46,27 @@ public class ProductServiceImpl implements ProductService {
         return productSkuList.stream().map(productSku -> {
             ProductSkuVo productSkuVo = new ProductSkuVo();
             BeanUtils.copyIgnoreNullProperties(productSku, productSkuVo);
-            productSkuExtCacheRepository.findById(productSku.getId()).ifPresent(productSkuExt -> BeanUtils.copyIgnoreNullProperties(productSkuExt, productSkuVo));
-            ProductVo productVo = new ProductVo();
-            productCacheRepository.findById(productSku.getProductId()).ifPresent(e -> {
-                BeanUtils.copyIgnoreNullProperties(e, productVo);
-                productVo.setBrand(brandCacheRepository.getOne(e.getBrandId()));
-                productVo.setCategory(categoryCacheRepository.getOne(e.getCategoryId()));
-            });
+            productSkuExtCacheRepository.findById(productSku.getId())
+                                        .ifPresent(productSkuExt -> BeanUtils.copyIgnoreNullProperties(productSkuExt, productSkuVo));
+            ProductVo productVo = findById(productSku.getProductId());
             productSkuVo.setProductVo(productVo);
             return productSkuVo;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductVo findById(Long id) {
+        return productCacheRepository.findById(id)
+                                     .map(this::toProductVo)
+                                     .orElse(null);
+    }
+
+    private ProductVo toProductVo(Product product) {
+        ProductVo productVo = new ProductVo();
+        BeanUtils.copyIgnoreNullProperties(product, productVo);
+        productVo.setBrand(brandCacheRepository.getOne(product.getBrandId()));
+        productVo.setCategory(categoryCacheRepository.getOne(product.getCategoryId()));
+        return productVo;
     }
 
 }
