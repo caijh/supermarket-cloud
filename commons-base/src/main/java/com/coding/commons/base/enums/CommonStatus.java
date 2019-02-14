@@ -1,4 +1,4 @@
-package com.coding.commons.base;
+package com.coding.commons.base.enums;
 
 public enum CommonStatus implements IndexEnum {
     IN_USE(0),
