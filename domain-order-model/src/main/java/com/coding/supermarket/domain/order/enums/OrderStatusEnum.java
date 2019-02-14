@@ -1,6 +1,6 @@
 package com.coding.supermarket.domain.order.enums;
 
-import com.coding.commons.base.IndexEnum;
+import com.coding.commons.base.enums.IndexEnum;
 
 public enum OrderStatusEnum implements IndexEnum {
     UN_PAY(0),
