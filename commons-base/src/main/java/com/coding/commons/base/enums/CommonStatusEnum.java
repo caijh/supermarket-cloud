@@ -1,12 +1,12 @@
 package com.coding.commons.base.enums;
 
-public enum CommonStatus implements IndexEnum {
+public enum CommonStatusEnum implements IndexEnum {
     IN_USE(0),
     DELETED(1);
 
     private Integer index;
 
-    CommonStatus(int index) {
+    CommonStatusEnum(int index) {
         this.index = index;
     }
 
