@@ -3,8 +3,8 @@ package com.coding.commons.base.data.jpa.service;
 import java.io.Serializable;
 import javax.transaction.Transactional;
 
-import com.coding.commons.base.BizException;
 import com.coding.commons.base.PersistentObject;
+import com.coding.commons.base.exception.BizException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
