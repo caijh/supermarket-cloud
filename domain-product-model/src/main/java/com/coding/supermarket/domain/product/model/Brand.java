@@ -25,8 +25,7 @@ public class Brand implements PersistentObject<String> {
 
     /**
      * 状态.
-     *
-     * @see com.coding.commons.base.CommonStatus
+     * 0 - 在用; 1 - 删除.
      */
     private Integer status;
 

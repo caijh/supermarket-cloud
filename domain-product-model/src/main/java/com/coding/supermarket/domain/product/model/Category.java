@@ -1,9 +1,9 @@
 package com.coding.supermarket.domain.product.model;
 
 import java.util.Date;
+import javax.persistence.Entity;
 
 import com.coding.commons.base.data.jpa.JpaBaseEntity;
-import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +24,7 @@ public class Category extends JpaBaseEntity<Long> {
     /**
      * 分类状态.
      *
-     * @see com.coding.commons.base.CommonStatus
+     * 0 - 在用; 1 - 删除.
      */
     private Integer status;
 
