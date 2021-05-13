@@ -20,6 +20,13 @@
     </properties>
 
     <modules>
+        <module>base-model</module>
+        <module>base-dao</module>
+        <module>base-service</module>
+        <module>product-model</module>
+        <module>product-interface</module>
+        <module>product-interface-impl</module>
+        <module>service-product</module>
 
     </modules>
 
@@ -64,6 +71,40 @@
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>base-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>base-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>base-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>product-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>product-interface</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>product-interface-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

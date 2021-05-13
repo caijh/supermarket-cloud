@@ -4,9 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.coding.supermarket</groupId>
-        <artifactId>service-parent</artifactId>
-        <version>1.0.0</version>
+        <groupId>com.github.caijh.supermart-cloud</groupId>
+        <artifactId>supermart-cloud-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>service-admin</artifactId>
@@ -16,9 +17,6 @@
     <name>service-admin</name>
     <description>service admin</description>
 
-    <properties>
-        <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -130,16 +128,5 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>
