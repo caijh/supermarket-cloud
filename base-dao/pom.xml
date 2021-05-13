@@ -10,17 +10,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>product-interface</artifactId>
-
+    <artifactId>base-dao</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.github.caijh.supermart-cloud</groupId>
-            <artifactId>product-model</artifactId>
+            <artifactId>base-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.caijh.supermart-cloud</groupId>
-            <artifactId>base-service</artifactId>
+            <groupId>com.github.caijh.framework</groupId>
+            <artifactId>framework-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.caijh.framework</groupId>
+            <artifactId>framework-data-redis</artifactId>
         </dependency>
     </dependencies>
-
 </project>
