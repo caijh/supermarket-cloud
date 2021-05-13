@@ -4,8 +4,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.github.caijh.framework.core.exception.BizException;
+import com.github.caijh.supermarket.product.enums.ProductStatusEnum;
+import com.github.caijh.supermarket.product.model.Product;
 import com.github.caijh.supermarket.product.request.ProductListReqBody;
+import com.github.caijh.supermarket.product.request.ProductSkuListReqBody;
+import com.github.caijh.supermarket.product.service.ProductService;
+import com.github.caijh.supermarket.product.vo.ProductSkuVo;
+import com.github.caijh.supermarket.product.vo.ProductVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
