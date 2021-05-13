@@ -1,4 +1,4 @@
-package com.githuba.caijh.supermarket.product.service;
+package com.github.caijh.supermarket.product.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,14 +7,13 @@ import javax.inject.Named;
 
 import com.github.caijh.supermarket.product.model.Product;
 import com.github.caijh.supermarket.product.model.ProductSku;
-import com.github.caijh.supermarket.product.service.ProductService;
+import com.github.caijh.supermarket.product.repository.BrandRepository;
+import com.github.caijh.supermarket.product.repository.CategoryRepository;
+import com.github.caijh.supermarket.product.repository.ProductRepository;
+import com.github.caijh.supermarket.product.repository.ProductSkuExtRepository;
+import com.github.caijh.supermarket.product.repository.ProductSkuRepository;
 import com.github.caijh.supermarket.product.vo.ProductSkuVo;
 import com.github.caijh.supermarket.product.vo.ProductVo;
-import com.githuba.caijh.supermarket.product.repository.BrandRepository;
-import com.githuba.caijh.supermarket.product.repository.CategoryRepository;
-import com.githuba.caijh.supermarket.product.repository.ProductRepository;
-import com.githuba.caijh.supermarket.product.repository.ProductSkuExtRepository;
-import com.githuba.caijh.supermarket.product.repository.ProductSkuRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -49,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
             BeanUtils.copyProperties(productSku, productSkuVo);
             this.productSkuExtCacheRepository.findById(productSku.getId())
                                              .ifPresent(productSkuExt -> BeanUtils
-                                                 .copyProperties(productSkuExt, productSkuVo));
+                                                     .copyProperties(productSkuExt, productSkuVo));
             ProductVo productVo = this.findById(productSku.getProductId());
             productSkuVo.setProductVo(productVo);
             return productSkuVo;

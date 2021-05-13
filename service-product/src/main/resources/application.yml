@@ -1,37 +1,13 @@
+# custom env var
+MYSQL_HOST: 127.0.0.1
+MYSQL_PORT: 6379
+MYSQL_DB: supermarket
+MYSQL_USER: root
+MYSQL_PASSWORD: 123456
+
 spring:
-  http:
-    encoding:
-      charset: utf-8
-  datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/supermarket-product
-    username: supermarket
-    password: supermarket
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-      naming:
-        implicit-strategy: com.coding.commons.base.data.jpa.CustomImplicitNamingStrategy
-    properties:
-      hibernate.jdbc.lob.non_contextual_creation: true
-      hibernate.dialect: com.coding.commons.base.data.jpa.CustomPostgreSQLDialect
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    database: 0
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: guest
-    password: guest
-
-management:
-  endpoint:
-    shutdown:
-      enabled: true
-
-swagger:
-  enabled: true
-  title: service-product
-  description: service-product
-
+  cloud:
+    nacos:
+      discovery:
+        register-enabled: true
+        server-addr: 127.0.0.1:8848
