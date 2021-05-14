@@ -2,9 +2,9 @@ package com.github.caijh.supermarket.product.vo;
 
 import java.util.List;
 
-import com.coding.commons.base.RespBody;
-import com.coding.supermarket.domain.product.model.ProductOrigin;
-import com.coding.supermarket.domain.product.model.ProductSkuAttr;
+import com.github.caijh.framework.core.model.RespBody;
+import com.github.caijh.supermarket.product.model.ProductOriginPlace;
+import com.github.caijh.supermarket.product.model.ProductSkuAttr;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,13 +12,14 @@ import lombok.Setter;
 @Setter
 public class ProductSkuVo implements RespBody {
 
+    private static final long serialVersionUID = 6362156218854839518L;
     private Long id;
     private Long productId;
     private String thumbnail;
     private List<ProductSkuAttr> skuAttrs;
     private Integer price;
     private Integer referPrice;
-    private ProductOrigin origin;
+    private ProductOriginPlace origin;
     private String barcode;
     private Integer status;
 
