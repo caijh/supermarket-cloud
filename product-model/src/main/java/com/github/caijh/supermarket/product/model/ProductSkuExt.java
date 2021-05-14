@@ -1,20 +1,19 @@
 package com.github.caijh.supermarket.product.model;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.caijh.supermarket.base.model.AbstractBaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Getter
-@Setter
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ProductSkuExt extends AbstractBaseEntity<Long> {
 
     private static final long serialVersionUID = 7210303544993587691L;
-    @Id
+
     private Long productSkuId;
 
     /**

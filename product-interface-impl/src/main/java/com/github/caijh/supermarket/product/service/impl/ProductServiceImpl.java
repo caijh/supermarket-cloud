@@ -22,7 +22,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public class ProductServiceImpl implements ProductService {
 
     @Inject
-    private ProductRepository productCacheRepository;
+    private ProductRepository productRepository;
 
     @Inject
     private ProductSkuRepository productSkuCacheRepository;
@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public JpaRepository<Product, Long> getRepository() {
-        return this.productCacheRepository;
+        return this.productRepository;
     }
 
     @Override
@@ -58,9 +58,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductVo findById(Long id) {
-        return this.productCacheRepository.findById(id)
-                                          .map(this::toProductVo)
-                                          .orElse(null);
+        return this.productRepository.findById(id)
+                                     .map(this::toProductVo)
+                                     .orElse(null);
     }
 
     private ProductVo toProductVo(Product product) {

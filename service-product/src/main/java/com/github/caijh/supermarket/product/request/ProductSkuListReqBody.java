@@ -2,7 +2,7 @@ package com.github.caijh.supermarket.product.request;
 
 import java.util.List;
 
-import com.coding.commons.base.ReqBody;
+import com.github.caijh.framework.core.model.ReqBody;
 import lombok.Getter;
 import lombok.Setter;
 
