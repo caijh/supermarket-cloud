@@ -9,17 +9,18 @@ import com.github.caijh.supermarket.base.model.AbstractBaseEntity;
 import com.github.caijh.supermarket.product.enums.ProductStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
-@Entity
 public class ProductSku extends AbstractBaseEntity<Long> {
 
     private static final long serialVersionUID = -6466050927087958364L;

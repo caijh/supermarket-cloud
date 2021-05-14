@@ -29,6 +29,8 @@
         <module>service-product</module>
 
         <module>order-model</module>
+        <module>order-interface</module>
+        <module>service-order</module>
     </modules>
 
     <repositories>
@@ -107,6 +109,11 @@
             <dependency>
                 <groupId>com.github.caijh.supermart-cloud</groupId>
                 <artifactId>order-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>order-interface</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
