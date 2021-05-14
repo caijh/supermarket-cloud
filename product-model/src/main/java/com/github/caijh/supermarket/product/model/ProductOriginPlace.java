@@ -2,7 +2,7 @@ package com.github.caijh.supermarket.product.model;
 
 import java.io.Serializable;
 
-import com.github.caijh.supermarket.model.Country;
+import com.github.caijh.supermarket.base.model.Country;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;

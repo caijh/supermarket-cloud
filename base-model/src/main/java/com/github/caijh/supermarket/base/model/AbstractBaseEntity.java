@@ -1,4 +1,4 @@
-package com.github.caijh.supermarket.model;
+package com.github.caijh.supermarket.base.model;
 
 import java.io.Serializable;
 import javax.persistence.GeneratedValue;
@@ -16,6 +16,7 @@ import org.hibernate.annotations.Parameter;
 @EqualsAndHashCode(callSuper = false)
 public class AbstractBaseEntity<T extends Serializable> extends BaseEntity<T> {
 
+    private static final long serialVersionUID = 6766715344267464316L;
     @GenericGenerator(
             name = "sequenceGenerator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",

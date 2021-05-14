@@ -1,4 +1,4 @@
-package com.github.caijh.supermarket.base;
+package com.github.caijh.supermarket.base.service;
 
 import java.io.Serializable;
 import javax.transaction.Transactional;

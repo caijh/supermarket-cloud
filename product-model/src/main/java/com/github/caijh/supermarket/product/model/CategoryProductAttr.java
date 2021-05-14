@@ -3,7 +3,7 @@ package com.github.caijh.supermarket.product.model;
 import java.util.List;
 import javax.persistence.Entity;
 
-import com.github.caijh.supermarket.model.AbstractBaseEntity;
+import com.github.caijh.supermarket.base.model.AbstractBaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;

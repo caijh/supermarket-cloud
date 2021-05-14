@@ -1,4 +1,4 @@
-package com.github.caijh.supermarket.product.service;
+package com.github.caijh.supermarket.product.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +12,7 @@ import com.github.caijh.supermarket.product.repository.CategoryRepository;
 import com.github.caijh.supermarket.product.repository.ProductRepository;
 import com.github.caijh.supermarket.product.repository.ProductSkuExtRepository;
 import com.github.caijh.supermarket.product.repository.ProductSkuRepository;
+import com.github.caijh.supermarket.product.service.ProductService;
 import com.github.caijh.supermarket.product.vo.ProductSkuVo;
 import com.github.caijh.supermarket.product.vo.ProductVo;
 import org.springframework.beans.BeanUtils;

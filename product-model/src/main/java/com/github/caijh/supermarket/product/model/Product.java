@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import com.github.caijh.supermarket.model.AbstractBaseEntity;
+import com.github.caijh.supermarket.base.model.AbstractBaseEntity;
 import com.github.caijh.supermarket.product.enums.ProductStatusEnum;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.github.caijh.supermarket.model;
+package com.github.caijh.supermarket.base.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

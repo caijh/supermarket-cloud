@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.caijh.supermarket.model.AbstractBaseEntity;
+import com.github.caijh.supermarket.base.model.AbstractBaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 

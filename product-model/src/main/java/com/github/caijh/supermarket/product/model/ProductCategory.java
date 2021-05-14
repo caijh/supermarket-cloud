@@ -3,7 +3,7 @@ package com.github.caijh.supermarket.product.model;
 import java.util.Date;
 import javax.persistence.Entity;
 
-import com.github.caijh.supermarket.model.AbstractBaseEntity;
+import com.github.caijh.supermarket.base.model.AbstractBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
