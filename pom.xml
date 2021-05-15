@@ -23,6 +23,7 @@
         <module>base-model</module>
         <module>base-dao</module>
         <module>base-service</module>
+
         <module>product-model</module>
         <module>product-interface</module>
         <module>product-interface-impl</module>
@@ -30,7 +31,15 @@
 
         <module>order-model</module>
         <module>order-interface</module>
+        <module>order-interface-impl</module>
         <module>service-order</module>
+
+        <module>coupon-model</module>
+        <module>coupon-interface</module>
+        <module>coupon-interface-impl</module>
+        <module>service-coupon</module>
+
+        <module>service-admin</module>
     </modules>
 
     <repositories>
@@ -72,6 +81,12 @@
             <version>${kotlin.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.caijh.framework</groupId>
+            <artifactId>framework-utils</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -114,6 +129,27 @@
             <dependency>
                 <groupId>com.github.caijh.supermart-cloud</groupId>
                 <artifactId>order-interface</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>order-interface-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>coupon-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>coupon-interface</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.caijh.supermart-cloud</groupId>
+                <artifactId>coupon-interface-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

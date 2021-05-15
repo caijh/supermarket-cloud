@@ -1,34 +1,12 @@
-debug: true
+MYSQL_HOST: 127.0.0.1
+MYSQL_PORT: 3306
+MYSQL_DB: supermarket
+MYSQL_USER: root
+MYSQL_PASSWORD: 123456
 
 spring:
-  http:
-    encoding:
-      charset: utf-8
-  datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/supermarket-order
-    username: supermarket
-    password: supermarket
-    driver-class-name: org.postgresql.Driver
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    database: 0
-
-mybatis:
-  type-aliases-package: com.coding.supermarket.domain.order
-  mapper-locations: classpath*:mapper/**/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: true
-    default-fetch-size: 100
-    default-statement-timeout: 30
-
-swagger:
-  enabled: true
-  title: service-order
-  description: service-order
-
-management:
-  endpoint:
-    shutdown:
-      enabled: true
+  cloud:
+    nacos:
+      discovery:
+        register-enabled: true
+        server-addr: 127.0.0.1:8848
